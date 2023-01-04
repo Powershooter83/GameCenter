@@ -102,7 +102,7 @@ public class ConnectFour extends Game {
                 boolean validPosition = true;
 
                 for (int i = 0; i < BOARD_HEIGHT; i++) {
-                    if (!board.isPositionEmpty(new Position(positionAsCoordinates.xAxis(), i))) {
+                    if (board.isPositionOccupied(new Position(positionAsCoordinates.xAxis(), i))) {
                         if (i == BOARD_HEIGHT - 1) {
                             System.out.println("Die Spalte ist voll");
                             validPosition = false;

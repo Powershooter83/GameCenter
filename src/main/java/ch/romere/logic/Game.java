@@ -18,6 +18,7 @@ public abstract class Game implements Display {
     public int BOARD_WIDTH;
     protected Player currentPlayer;
 
+
     protected final PlayerInput playerInput = new PlayerInput();
 
     public void printVictory(Player victoryPlayer) throws Exception {

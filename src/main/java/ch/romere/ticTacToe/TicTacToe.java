@@ -1,18 +1,20 @@
 package ch.romere.ticTacToe;
 
 import ch.romere.board.Board;
+import ch.romere.board.Position;
 import ch.romere.logic.Game;
 import ch.romere.player.Player;
-import ch.romere.board.Position;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TicTacToe extends Game {
 
     private final String HORIZONTAL_LINE = "  ---+---+---";
     private final Character VERTICAL_LINE = '|';
     private final Character SPACE = ' ';
+
     public TicTacToe(ArrayList<Player> players) {
         BOARD_WIDTH = 3;
         BOARD_HEIGHT = 3;
@@ -86,33 +88,31 @@ public class TicTacToe extends Game {
 
         System.out.println("Player " + currentPlayer.getName() + " starts the game.");
 
-        while (true) {
-            try {
-                Position position = playerInput.getInputPosition();
+        while (true) try {
+            Position position = playerInput.getInputPosition();
 
-                if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
-                    System.out.println("Die X-Achse muss zwischen 1 und 3 liegen");
-                    continue;
-                }
-
-                if (position.yAxis() <= 0 || position.yAxis() > BOARD_HEIGHT) {
-                    System.out.println("Die Y-Achse muss zwischen 1 und 3 liegen");
-                    continue;
-                }
-
-                Position positionAsCoordinates = new Position(position.yAxis() - 1, position.xAxis() - 1);
-
-                if (!board.isPositionEmpty(positionAsCoordinates)) {
-                    System.out.println("Dieses Feld ist bereits belegt");
-                    continue;
-                }
-                board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), positionAsCoordinates));
-                currentPlayer = players.stream().filter(player -> !player.equals(currentPlayer)).findFirst().orElse(null);
-                updateBoard();
-                checkForWin();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
+                System.out.println("Die X-Achse muss zwischen 1 und 3 liegen");
+                continue;
             }
+
+            if (position.yAxis() <= 0 || position.yAxis() > BOARD_HEIGHT) {
+                System.out.println("Die Y-Achse muss zwischen 1 und 3 liegen");
+                continue;
+            }
+
+            Position positionAsCoordinates = new Position(position.yAxis() - 1, position.xAxis() - 1);
+
+            if (board.isPositionOccupied(positionAsCoordinates)) {
+                System.out.println("Dieses Feld ist bereits belegt");
+                continue;
+            }
+            board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), positionAsCoordinates));
+            updateBoard();
+            checkForWin();
+            currentPlayer = players.stream().filter(player -> !player.equals(currentPlayer)).findFirst().orElse(null);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }
@@ -133,17 +133,12 @@ public class TicTacToe extends Game {
 
     }
 
-    private boolean checkForLine(Position pos1, Position pos2, Position pos3) {
+    private boolean checkForLine(final Position pos1, final Position pos2, final Position pos3) {
         try {
-            return ((GameObject) board.getPieceAtPosition(pos1)).getType() ==
-                    ((GameObject) board.getPieceAtPosition(pos2)).getType() &&
-                    ((GameObject) board.getPieceAtPosition(pos1)).getType() ==
-                            ((GameObject) board.getPieceAtPosition(pos3)).getType();
+            return board.getPiecesAtPositions(List.of(pos1, pos2, pos3)).stream().filter(piece -> piece.getPlayer().equals(currentPlayer)).count() == 3;
         } catch (NullPointerException e) {
             return false;
         }
-
     }
-
 
 }
