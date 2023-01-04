@@ -1,4 +1,4 @@
-package ch.romere.logic;
+package ch.romere.ticTacToe;
 
 public enum GameObjectType {
     X,
