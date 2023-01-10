@@ -25,8 +25,12 @@ public class Board {
         final ArrayList<Piece> pieces = new ArrayList<>();
         positions.forEach(position -> pieces.add(getPieceAtPosition(position)));
         return pieces;
-
     }
+
+    public ArrayList<Piece> getPieces(){
+        return pieces;
+    }
+
 
 
 }

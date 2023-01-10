@@ -1,6 +1,7 @@
 package ch.romere;
 
 import ch.romere.connectFour.ConnectFour;
+import ch.romere.memory.Memory;
 import ch.romere.player.Player;
 import ch.romere.ticTacToe.TicTacToe;
 
@@ -48,6 +49,8 @@ public class MainMenu {
         System.out.println("Bitte selektiere ein Spiel zum fortfahren:");
         System.out.println("1. TicTacToe");
         System.out.println("2. VierGewinnt");
+        System.out.println("3. Memory");
+        System.out.println("4. Gameshow");
         System.out.println("5. Exit");
 
         while (true) {
@@ -58,6 +61,10 @@ public class MainMenu {
             }
             if (input.equals("2")) {
                 new ConnectFour(players);
+                break;
+            }
+            if (input.equals("3")) {
+                new Memory(players);
                 break;
             }
         }
