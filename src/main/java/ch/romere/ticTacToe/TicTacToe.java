@@ -4,81 +4,25 @@ import ch.romere.board.Board;
 import ch.romere.board.Position;
 import ch.romere.logic.Game;
 import ch.romere.player.Player;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TicTacToe extends Game {
 
-    private final String HORIZONTAL_LINE = "  ---+---+---";
-    private final Character VERTICAL_LINE = '|';
-    private final Character SPACE = ' ';
-
-    public TicTacToe(ArrayList<Player> players) {
+    public TicTacToe(final List<Player> players) {
         BOARD_WIDTH = 3;
         BOARD_HEIGHT = 3;
+        BOARD_CELL_WIDTH = 3;
+        BOARD_CELL_HEIGHT = 1;
         this.players = players;
         board = new Board();
         start();
     }
 
-
-    @Override
-    public void printBoard(boolean lol, boolean test) {
-        String sb = getLine(2) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(1) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(0) + System.lineSeparator() + "   1   2   3";
-        System.out.println(sb);
-    }
-
-
-    private String getLine(int line) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(line + 1).append(SPACE);
-        for (int i = 0; i < 3; i++) {
-            sb.append(SPACE);
-            if (board.getPieceAtPosition(new Position(i, line)) != null) {
-                sb.append(board.getPieceAtPosition(new Position(i, line)).toString()).append(SPACE);
-                if (i != 2) {
-                    sb.append(VERTICAL_LINE);
-                }
-
-                continue;
-            }
-            sb.append(SPACE);
-            if (i == 2) {
-                sb.append(SPACE);
-                continue;
-            }
-            sb.append(SPACE).append(VERTICAL_LINE);
-        }
-        return sb.toString();
-    }
-
-
-    @Override
-    public void printTitle() {
-        System.out.println(" ________  __                  ________                         ________                  \n" +
-                "/        |/  |                /        |                       /        |                 \n" +
-                "$$$$$$$$/ $$/   _______       $$$$$$$$/______    _______       $$$$$$$$/______    ______  \n" +
-                "   $$ |   /  | /       |         $$ | /      \\  /       |         $$ | /      \\  /      \\ \n" +
-                "   $$ |   $$ |/$$$$$$$/          $$ | $$$$$$  |/$$$$$$$/          $$ |/$$$$$$  |/$$$$$$  |\n" +
-                "   $$ |   $$ |$$ |               $$ | /    $$ |$$ |               $$ |$$ |  $$ |$$    $$ |\n" +
-                "   $$ |   $$ |$$ \\_____          $$ |/$$$$$$$ |$$ \\_____          $$ |$$ \\__$$ |$$$$$$$$/ \n" +
-                "   $$ |   $$ |$$       |         $$ |$$    $$ |$$       |         $$ |$$    $$/ $$       |\n" +
-                "   $$/    $$/  $$$$$$$/          $$/  $$$$$$$/  $$$$$$$/          $$/  $$$$$$/   $$$$$$$/ \n" +
-                "                                                                                          \n" +
-                "                                                                                          \n" +
-                "                                                                                          ");
-    }
-
     @Override
     public void start() {
         printTitle();
-        printBoard(false, false);
+        printBoard(true, true);
 
 
         Collections.shuffle(players);
@@ -139,6 +83,22 @@ public class TicTacToe extends Game {
         } catch (NullPointerException e) {
             return false;
         }
+    }
+
+    @Override
+    public void printTitle() {
+        System.out.println(" ________  __                  ________                         ________                  \n" +
+              "/        |/  |                /        |                       /        |                 \n" +
+              "$$$$$$$$/ $$/   _______       $$$$$$$$/______    _______       $$$$$$$$/______    ______  \n" +
+              "   $$ |   /  | /       |         $$ | /      \\  /       |         $$ | /      \\  /      \\ \n" +
+              "   $$ |   $$ |/$$$$$$$/          $$ | $$$$$$  |/$$$$$$$/          $$ |/$$$$$$  |/$$$$$$  |\n" +
+              "   $$ |   $$ |$$ |               $$ | /    $$ |$$ |               $$ |$$ |  $$ |$$    $$ |\n" +
+              "   $$ |   $$ |$$ \\_____          $$ |/$$$$$$$ |$$ \\_____          $$ |$$ \\__$$ |$$$$$$$$/ \n" +
+              "   $$ |   $$ |$$       |         $$ |$$    $$ |$$       |         $$ |$$    $$/ $$       |\n" +
+              "   $$/    $$/  $$$$$$$/          $$/  $$$$$$$/  $$$$$$$/          $$/  $$$$$$/   $$$$$$$/ \n" +
+              "                                                                                          \n" +
+              "                                                                                          \n" +
+              "                                                                                          ");
     }
 
 }

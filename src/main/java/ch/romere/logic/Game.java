@@ -10,6 +10,7 @@ import ch.romere.utils.PlayerInput;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public abstract class Game implements Display {
@@ -21,7 +22,7 @@ public abstract class Game implements Display {
     public int BOARD_CELL_HEIGHT = 2;
 
     protected Board board;
-    protected ArrayList<Player> players;
+    protected List<Player> players;
     protected Player currentPlayer;
 
     public abstract void start();

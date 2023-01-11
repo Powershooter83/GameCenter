@@ -11,14 +11,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ConnectFour extends Game {
-    private final String HORIZONTAL_LINE = "  ---+---+---+---+---+---+---";
-    private final Character VERTICAL_LINE = '|';
-    private final Character SPACE = ' ';
-
-
     public ConnectFour(ArrayList<Player> players) {
         BOARD_WIDTH = 7;
         BOARD_HEIGHT = 6;
+        BOARD_CELL_HEIGHT = 2;
+        BOARD_CELL_WIDTH = 10;
         this.players = players;
         board = new Board();
         start();
@@ -34,45 +31,8 @@ public class ConnectFour extends Game {
                 "                   \\/                \\/     \\/               \\/     \\/      ");
     }
 
-    @Override
-    public void printBoard(boolean horizontal, boolean vertical) {
-        String sb = getLine(5) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(4) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(3) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(2) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(1) + System.lineSeparator() +
-                HORIZONTAL_LINE + System.lineSeparator() +
-                getLine(0) + System.lineSeparator() + "   1   2   3   4   5   6   7";
-        System.out.println(sb);
-    }
 
 
-    private String getLine(int line) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(SPACE).append(SPACE);
-        for (int i = 0; i < 7; i++) {
-            sb.append(SPACE);
-            if (board.getPieceAtPosition(new Position(i, line)) != null) {
-                sb.append(board.getPieceAtPosition(new Position(i, line)).toString()).append(SPACE);
-                if (i != 6) {
-                    sb.append(VERTICAL_LINE);
-                }
-
-                continue;
-            }
-            sb.append(SPACE);
-            if (i == 6) {
-                sb.append(SPACE);
-                continue;
-            }
-            sb.append(SPACE).append(VERTICAL_LINE);
-        }
-        return sb.toString();
-    }
 
 
     @Override

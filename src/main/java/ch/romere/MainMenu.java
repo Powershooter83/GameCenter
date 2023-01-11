@@ -6,14 +6,15 @@ import ch.romere.player.Player;
 import ch.romere.ticTacToe.TicTacToe;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainMenu {
 
-    private final ArrayList<Player> players;
+    private final List<Player> players;
     private final Scanner scanner = new Scanner(System.in);
 
-    public MainMenu(final ArrayList<Player> players){
+    public MainMenu(final List<Player> players){
         this.players = players;
         printMenu();
         gameSelection();

@@ -5,26 +5,18 @@ import ch.romere.board.Position;
 import ch.romere.logic.Game;
 import ch.romere.player.Player;
 import ch.romere.ticTacToe.GameObjectType;
-import ch.romere.utils.PlayerInput;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Memory extends Game {
 
     private int openCards = 0;
     private final HashMap<Player, Integer> playerPoints = new HashMap<>();
 
-    private final ArrayList<String> cards = new ArrayList<>(Arrays.asList("Auto", "Fisch", "Wolkenkratzer",
-            "Helikopter",
-            "Java",
-            "BBZW",
-            "Schiff",
-            "Hund",
-            "Banane",
-            "Kiosk",
-            "Einkaufszentrum",
-            "Ferien"));
+    private List<String> cards = new ArrayList<>();
 
     public Memory(ArrayList<Player> players) {
         BOARD_WIDTH = 6;
@@ -98,6 +90,11 @@ public class Memory extends Game {
     }
 
     private void loadCards() {
+        try {
+            loadCardsFromFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Collections.shuffle(cards);
 
         int counting = 1;
@@ -130,6 +127,10 @@ public class Memory extends Game {
     @Override
     public void printTitle() {
 
+    }
+
+    private void loadCardsFromFile() throws IOException {
+        this.cards = Files.readAllLines(Path.of(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getPath()));
     }
 
 
