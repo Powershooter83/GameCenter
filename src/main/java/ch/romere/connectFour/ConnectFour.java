@@ -96,8 +96,33 @@ public class ConnectFour extends Game {
         return hasLine;
     }
 
+    private boolean hasDiagonalLine() {
+        boolean hasLine = false;
+
+        for (int yAxis = 0; yAxis < BOARD_WIDTH; yAxis++) {
+            for (int xAxis = 0; xAxis < BOARD_WIDTH; xAxis++) {
+                boolean hasDiagonalLineToRight = true;
+                boolean hasDiagonalLineToLeft = true;
+
+                for (int addAxis = 0; addAxis < 4; addAxis++) {
+                    Piece piece = board.getPieceAtPosition(new Position(xAxis + addAxis, yAxis + addAxis));
+                    hasDiagonalLineToRight = piece != null && piece.getPlayer() == currentPlayer && hasDiagonalLineToRight;
+
+                    Piece piece2 = board.getPieceAtPosition(new Position(xAxis - addAxis, yAxis + addAxis));
+                    hasDiagonalLineToLeft = piece2 != null && piece2.getPlayer() == currentPlayer && hasDiagonalLineToLeft;
+                }
+                if (!hasLine) {
+                    hasLine = hasDiagonalLineToRight || hasDiagonalLineToLeft;
+                }
+
+            }
+        }
+        return hasLine;
+    }
+
+
     private void checkForWin() {
-        if (hasHorizontalOrVerticalLine()) {
+        if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
             try {
                 printVictory(currentPlayer);
             } catch (Exception e) {
