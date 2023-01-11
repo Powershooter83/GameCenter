@@ -13,7 +13,7 @@ public class PlayerInput {
         String input = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
 
         if (input.length() < 2) {
-            System.out.println("Die Eingabe muss mindestens 2 Zeichen lang sein");
+            throw new InputIsNotValidPositionException();
         }
 
         if (Character.isLetter(input.charAt(0)) && Character.isDigit(input.charAt(1))) {

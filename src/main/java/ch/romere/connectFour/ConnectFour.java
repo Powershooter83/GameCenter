@@ -8,6 +8,7 @@ import ch.romere.logic.Piece;
 import ch.romere.player.Player;
 import ch.romere.ticTacToe.GameObject;
 import ch.romere.ticTacToe.GameObjectType;
+import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.List;
 
@@ -26,12 +27,14 @@ public class ConnectFour extends Game {
     @Override
     public void start() {
         printTitle();
-        printBoard(true, false);
+        printDescription();
 
         currentPlayer = getRandomPlayer();
         currentPlayer.setPiece(GameObjectType.X.toString());
         players.get(1).setPiece(GameObjectType.O.toString());
         printStartingPlayer();
+
+        printBoard(true, false);
 
         gameState = GameState.RUNNING;
         eventHandler();
@@ -120,7 +123,6 @@ public class ConnectFour extends Game {
         return hasLine;
     }
 
-
     private void checkForWin() {
         if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
             try {
@@ -133,12 +135,27 @@ public class ConnectFour extends Game {
 
     @Override
     public void printTitle() {
-        System.out.println("____   ____.__                 ________              .__               __   \n" +
-                "\\   \\ /   /|__| ___________   /  _____/  ______  _  _|__| ____   _____/  |_ \n" +
-                " \\   Y   / |  |/ __ \\_  __ \\ /   \\  ____/ __ \\ \\/ \\/ /  |/    \\ /    \\   __\\\n" +
-                "  \\     /  |  \\  ___/|  | \\/ \\    \\_\\  \\  ___/\\     /|  |   |  \\   |  \\  |  \n" +
-                "   \\___/   |__|\\___  >__|     \\______  /\\___  >\\/\\_/ |__|___|  /___|  /__|  \n" +
-                "                   \\/                \\/     \\/               \\/     \\/      ");
+        clearScreen();
+        try {
+            ASCIIArtGenerator.printTextArt("Vier Gewinnt", ASCIIArtGenerator.ART_SIZE_SMALL,
+                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        printSpacer();
     }
+
+    @Override
+    public void printDescription() {
+        System.out.println("""
+                Connect Four ist ein Brettspiel fuer zwei Spieler.\s
+                Das Spielbrett besteht aus 7 Spalten und 6 Reihen.\s
+                Die Spieler setzen abwechselnd ihre Spielsteine in die Spalten.\s
+                Gewonnen hat der Spieler, der zuerst vier Spielsteine in einer Reihe hat.\s
+                Dabei koennen die Spielsteine horizontal, vertikal oder diagonal liegen.\s
+                Koordinaten in dem Format: [1, 2, 3, ...] in die Console schreiben. (Spaltennummer)""");
+        printSpacer();
+    }
+
 
 }

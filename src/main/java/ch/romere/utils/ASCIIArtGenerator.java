@@ -76,7 +76,7 @@ public class ASCIIArtGenerator {
      * @param textHeight
      * @throws Exception
      */
-    static void printTextArt(String artText, int textHeight) throws Exception {
+    public static void printTextArt(String artText, int textHeight) throws Exception {
         printTextArt(artText, textHeight, ASCIIArtFont.ART_FONT_DIALOG, DEFAULT_ART_SYMBOL);
     }
 

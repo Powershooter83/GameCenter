@@ -6,6 +6,7 @@ import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.player.Player;
 import ch.romere.ticTacToe.GameObjectType;
+import ch.romere.utils.ASCIIArtGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,14 +33,16 @@ public class Memory extends Game {
     @Override
     public void start() {
         printTitle();
+        printDescription();
         loadCards();
-        printBoard(false, false);
 
         currentPlayer = getRandomPlayer();
         currentPlayer.setPiece(GameObjectType.X.toString());
         players.get(1).setPiece(GameObjectType.O.toString());
-
         printStartingPlayer();
+
+        printBoard(false, false);
+
         gameState = GameState.RUNNING;
         eventHandler();
 
@@ -68,6 +71,12 @@ public class Memory extends Game {
 
                     if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
                         try {
+                            ASCIIArtGenerator.printTextArt("Resultat: " +
+                                            Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() +
+                                            " zu " +
+                                            Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL,
+                                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+
                             printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
                         } catch (Exception e) {
                             throw new RuntimeException(e);
@@ -78,7 +87,10 @@ public class Memory extends Game {
 
                 } else {
                     openCards.forEach(card -> card.showText(false));
-                    System.out.println("Kein Paar gefunden!");
+                    System.out.println("  -> Es wurde kein Paar gefunden!");
+                    swapCurrentPlayer();
+                    System.out.println("  -> Der Spieler " + currentPlayer.getName() + " ist nun an der Reihe.");
+                    System.out.println("  -> Die Karten werden in 5 Sekunden wieder verdeckt.");
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -130,7 +142,24 @@ public class Memory extends Game {
 
     @Override
     public void printTitle() {
+        clearScreen();
+        try {
+            ASCIIArtGenerator.printTextArt("Memory", ASCIIArtGenerator.ART_SIZE_SMALL,
+                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        printSpacer();
+    }
 
+    @Override
+    public void printDescription() {
+        System.out.println("""
+                Memory ist ein Gedaechtnisspiel, bei dem die Spieler versuchen, so viele Paare wie moeglich zu finden.
+                Die Spieler muessen die Kartenpaare aufdecken und versuchen, sie zu finden.
+                Wenn ein Spieler ein Paar gefunden hat, erhaelt er einen Punkt.
+                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""");
+        printSpacer();
     }
 
     private void loadCardsFromFile() throws IOException {

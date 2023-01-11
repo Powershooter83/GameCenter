@@ -2,10 +2,12 @@ package ch.romere.ticTacToe;
 
 import ch.romere.board.Board;
 import ch.romere.board.Position;
+import ch.romere.exceptions.InputIsNotValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.logic.Piece;
 import ch.romere.player.Player;
+import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.List;
 
@@ -24,44 +26,60 @@ public class TicTacToe extends Game {
 
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
-            Position position = playerInput.getInputPosition();
-
-            if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
-                System.out.println("Die X-Achse muss zwischen 1 und " + BOARD_WIDTH + " liegen");
+            Position position;
+            try {
+                position = playerInput.getInputPosition();
+            } catch (InputIsNotValidPositionException e) {
+                System.out.println("  -> Beachte bitte das Format: [A1, B2, C3...]");
                 continue;
             }
 
-            if (position.yAxis() <= 0 || position.yAxis() > BOARD_HEIGHT) {
-                System.out.println("Die Y-Achse muss zwischen 1 und " + BOARD_WIDTH + " liegen");
+            if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH || position.yAxis() <= 0 || position.yAxis() > BOARD_HEIGHT) {
+                System.out.println("  -> Beachte bitte das Format: [A1, B2, C3...]");
                 continue;
             }
 
             Position positionAsCoordinates = new Position(position.xAxis() - 1, position.yAxis() - 1);
 
             if (board.isPositionOccupied(positionAsCoordinates)) {
-                System.out.println("Dieses Feld ist bereits belegt");
+                System.out.println("  -> Dieses Feld ist bereits belegt! Selektiere bitte ein anderes.");
                 continue;
             }
             board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), positionAsCoordinates));
-            updateBoard();
             checkForWin();
             swapCurrentPlayer();
+            updateBoard();
         }
     }
 
     @Override
     public void start() {
         printTitle();
-        printBoard(true, true);
+        printDescription();
 
         currentPlayer = getRandomPlayer();
         currentPlayer.setPiece(GameObjectType.X.toString());
         players.get(1).setPiece(GameObjectType.O.toString());
         printStartingPlayer();
 
+        printBoard(true, true);
+
         gameState = GameState.RUNNING;
         eventHandler();
     }
+
+    @Override
+    public void printDescription() {
+        System.out.println("""
+                Tic Tac Toe ist ein Spiel fuer zwei Spieler.\s
+                Jeder Spieler hat ein Symbol, das er auf dem Spielfeld platzieren kann.\s
+                Ziel ist es, drei seiner Symbole in einer Reihe zu platzieren.\s
+                Die Reihen koennen horizontal, vertikal oder diagonal sein.\s
+                Gewonnen hat der Spieler, der zuerst drei seiner Symbole in einer Reihe platziert hat.\s
+                Koordinaten in dem Format: [A1, B2, C3, ...] in die Console schreiben.""");
+        printSpacer();
+    }
+
 
     private void checkForWin() {
         if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
@@ -112,18 +130,14 @@ public class TicTacToe extends Game {
 
     @Override
     public void printTitle() {
-        System.out.println(" ________  __                  ________                         ________                  \n" +
-                "/        |/  |                /        |                       /        |                 \n" +
-                "$$$$$$$$/ $$/   _______       $$$$$$$$/______    _______       $$$$$$$$/______    ______  \n" +
-                "   $$ |   /  | /       |         $$ | /      \\  /       |         $$ | /      \\  /      \\ \n" +
-                "   $$ |   $$ |/$$$$$$$/          $$ | $$$$$$  |/$$$$$$$/          $$ |/$$$$$$  |/$$$$$$  |\n" +
-                "   $$ |   $$ |$$ |               $$ | /    $$ |$$ |               $$ |$$ |  $$ |$$    $$ |\n" +
-                "   $$ |   $$ |$$ \\_____          $$ |/$$$$$$$ |$$ \\_____          $$ |$$ \\__$$ |$$$$$$$$/ \n" +
-                "   $$ |   $$ |$$       |         $$ |$$    $$ |$$       |         $$ |$$    $$/ $$       |\n" +
-                "   $$/    $$/  $$$$$$$/          $$/  $$$$$$$/  $$$$$$$/          $$/  $$$$$$/   $$$$$$$/ \n" +
-                "                                                                                          \n" +
-                "                                                                                          \n" +
-                "                                                                                          ");
+        clearScreen();
+        try {
+            ASCIIArtGenerator.printTextArt("Tic Tac Toe", ASCIIArtGenerator.ART_SIZE_SMALL,
+                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        printSpacer();
     }
 
 }

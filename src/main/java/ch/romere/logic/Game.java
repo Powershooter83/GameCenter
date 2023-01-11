@@ -63,7 +63,25 @@ public abstract class Game implements Display {
         for (int i = 0; i < 50; i++) {
             System.out.println();
         }
-        printBoard(false, false);
+        printTitle();
+        printDescription();
+        System.out.println("  -> Der Spieler " + currentPlayer.getName() + " ist am Zug!");
+        printSpacer();
+        printBoard(true, true);
+    }
+
+    @Override
+    public void printSpacer(){
+        for (int i = 0; i < 3; i++) {
+            System.out.println();
+        }
+    }
+
+    @Override
+    public void clearScreen() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 
 
@@ -153,7 +171,8 @@ public abstract class Game implements Display {
 
     @Override
     public void printStartingPlayer() {
-        System.out.println("Der Spieler " + currentPlayer.getName() + " beginnt die Partie!");
+        System.out.println("  -> Der Spieler " + currentPlayer.getName() + " beginnt die Partie!");
+        printSpacer();
     }
 
     public Player getRandomPlayer() {

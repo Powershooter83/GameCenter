@@ -4,6 +4,7 @@ import ch.romere.connectFour.ConnectFour;
 import ch.romere.memory.Memory;
 import ch.romere.player.Player;
 import ch.romere.ticTacToe.TicTacToe;
+import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +29,18 @@ public class MainMenu {
     }
 
     public void printMenu() {
-        System.out.println("  ________                         __      __            .__       .___\n" +
-                " /  _____/_____    _____   ____   /  \\    /  \\___________|  |    __| _/\n" +
-                "/   \\  ___\\__  \\  /     \\_/ __ \\  \\   \\/\\/   /  _ \\_  __ \\  |   / __ | \n" +
-                "\\    \\_\\  \\/ __ \\|  Y Y  \\  ___/   \\        (  <_> )  | \\/  |__/ /_/ | \n" +
-                " \\______  (____  /__|_|  /\\___  >   \\__/\\  / \\____/|__|  |____/\\____ | \n" +
-                "        \\/     \\/      \\/     \\/         \\/                         \\/ ");
+        try {
+            ASCIIArtGenerator.printTextArt("Welcome to the Game Center", ASCIIArtGenerator.ART_SIZE_SMALL);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(System.lineSeparator().repeat(3));
+
     }
 
     public void printPlayerSelection() {
         for (int i = 1; i <= 2; i++) {
-            System.out.println("Bitte gib einen Spielernamen fuer Spieler " + i + " ein:");
+            System.out.println("     ---> Bitte gib einen Spielernamen fuer Spieler " + i + " ein <---");
             players.add(new Player(scanner.nextLine()));
         }
 
@@ -50,7 +52,7 @@ public class MainMenu {
         System.out.println("1. TicTacToe");
         System.out.println("2. VierGewinnt");
         System.out.println("3. Memory");
-        System.out.println("5. Exit");
+        System.out.println("4. Exit");
 
         while (true) {
             switch (scanner.nextLine()) {
