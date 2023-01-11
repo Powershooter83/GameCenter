@@ -63,7 +63,7 @@ public abstract class Game implements Display {
         for (int i = 0; i < 50; i++) {
             System.out.println();
         }
-        printBoard(true, true);
+        printBoard(false, false);
     }
 
 

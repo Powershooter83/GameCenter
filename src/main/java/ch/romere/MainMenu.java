@@ -14,20 +14,20 @@ public class MainMenu {
     private final List<Player> players;
     private final Scanner scanner = new Scanner(System.in);
 
-    public MainMenu(final List<Player> players){
+    public MainMenu(final List<Player> players) {
         this.players = players;
         printMenu();
         gameSelection();
     }
 
-    public MainMenu(){
+    public MainMenu() {
         this.players = new ArrayList<>();
         printMenu();
         printPlayerSelection();
         gameSelection();
     }
 
-    public void printMenu(){
+    public void printMenu() {
         System.out.println("  ________                         __      __            .__       .___\n" +
                 " /  _____/_____    _____   ____   /  \\    /  \\___________|  |    __| _/\n" +
                 "/   \\  ___\\__  \\  /     \\_/ __ \\  \\   \\/\\/   /  _ \\_  __ \\  |   / __ | \n" +
@@ -36,8 +36,8 @@ public class MainMenu {
                 "        \\/     \\/      \\/     \\/         \\/                         \\/ ");
     }
 
-    public void printPlayerSelection(){
-        for(int i = 1; i <= 2; i++){
+    public void printPlayerSelection() {
+        for (int i = 1; i <= 2; i++) {
             System.out.println("Bitte gib einen Spielernamen fuer Spieler " + i + " ein:");
             players.add(new Player(scanner.nextLine()));
         }
@@ -50,27 +50,20 @@ public class MainMenu {
         System.out.println("1. TicTacToe");
         System.out.println("2. VierGewinnt");
         System.out.println("3. Memory");
-        System.out.println("4. Gameshow");
         System.out.println("5. Exit");
 
         while (true) {
-            String input = scanner.nextLine();
-            if (input.equals("1")) {
-                new TicTacToe(players);
-                break;
-            }
-            if (input.equals("2")) {
-                new ConnectFour(players);
-                break;
-            }
-            if (input.equals("3")) {
-                new Memory(players);
-                break;
+            switch (scanner.nextLine()) {
+                case "1":
+                    new TicTacToe(players);
+                case "2":
+                    new ConnectFour(players);
+                case "3":
+                    new Memory(players);
+                case "4":
+                    System.exit(0);
             }
         }
     }
-
-
-
 
 }
