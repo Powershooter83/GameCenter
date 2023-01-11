@@ -27,9 +27,9 @@ public class Memory extends Game {
             "Ferien"));
 
     public Memory(ArrayList<Player> players) {
-        BOARD_WIDTH = 3;
-        BOARD_HEIGHT = 2;
-        BOARD_CELL_WIDTH = 20;
+        BOARD_WIDTH = 6;
+        BOARD_HEIGHT = 3;
+        BOARD_CELL_WIDTH = 21;
         BOARD_CELL_HEIGHT = 5;
         this.players = players;
         this.players.forEach(player -> playerPoints.put(player, 0));
@@ -41,7 +41,7 @@ public class Memory extends Game {
     public void start() {
         printTitle();
         loadCards();
-        printBoard();
+        printBoard(true, true);
 
 
         Collections.shuffle(players);

@@ -35,7 +35,7 @@ public class ConnectFour extends Game {
     }
 
     @Override
-    public void printBoard() {
+    public void printBoard(boolean horizontal, boolean vertical) {
         String sb = getLine(5) + System.lineSeparator() +
                 HORIZONTAL_LINE + System.lineSeparator() +
                 getLine(4) + System.lineSeparator() +
@@ -78,7 +78,7 @@ public class ConnectFour extends Game {
     @Override
     public void start() {
         printTitle();
-        printBoard();
+        printBoard(false, false);
 
 
         Collections.shuffle(players);

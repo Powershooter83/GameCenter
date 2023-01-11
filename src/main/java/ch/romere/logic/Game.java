@@ -59,12 +59,12 @@ public abstract class Game implements Display {
         for (int i = 0; i < 50; i++) {
             System.out.println();
         }
-        printBoard();
+        printBoard(true, true);
     }
 
 
     @Override
-    public void printBoard() {
+    public void printBoard(final boolean horizontalLabeling, final boolean verticalLabeling) {
         StringBuilder board = new StringBuilder();
 
         for (int yAxis = 0; yAxis < BOARD_HEIGHT; yAxis++) {
@@ -72,8 +72,16 @@ public abstract class Game implements Display {
             StringBuilder horizontalSpacer = new StringBuilder();
 
             for (int cellHeight = 0; cellHeight < BOARD_CELL_HEIGHT; cellHeight++) {
+                if(cellHeight == BOARD_CELL_HEIGHT / 2 && verticalLabeling){
+                    sb.append(StringUtils.center(String.valueOf(BOARD_HEIGHT - yAxis), 9)).append("| ");
+
+                }else if(verticalLabeling){
+                    sb.append("         | ");
+                }
                 for (int xAxis = 0; xAxis <= BOARD_WIDTH; xAxis++) {
-                    sb.append("| ");
+                    if(xAxis != 0 || !verticalLabeling){
+                        sb.append("| ");
+                    }
                     if (this.board.getPieceAtPosition(new Position(xAxis, yAxis)) != null &&
                             cellHeight == BOARD_CELL_HEIGHT / 2) {
                         String text = this.board.getPieceAtPosition(new Position(xAxis, yAxis)).toString();
@@ -99,6 +107,10 @@ public abstract class Game implements Display {
                     continue;
                 }
 
+                if(verticalLabeling && xAxis == 0){
+                    horizontalSpacer.append(" ".repeat(Math.max(0, 9)));
+                }
+
                 horizontalSpacer.append("+").append("-".repeat(Math.max(0, BOARD_CELL_WIDTH)));
             }
 
@@ -107,10 +119,28 @@ public abstract class Game implements Display {
 
             if (yAxis == BOARD_HEIGHT - 1) {
                 board.append(horizontalSpacer).append(System.lineSeparator());
+
+                if(horizontalLabeling){
+                    StringBuilder labeling = new StringBuilder();
+
+                    for(int i = 1; i <= BOARD_WIDTH; i++){
+                        if(i == 1){
+                            if(verticalLabeling) {
+                                labeling.append(" ".repeat(9));
+                            }
+                            labeling.append(StringUtils.center(String.valueOf(i), BOARD_CELL_WIDTH + 2));
+                        }else{
+                            labeling.append(StringUtils.center(String.valueOf(i), BOARD_CELL_WIDTH + 1));
+                        }
+                    }
+
+                    board.append(labeling);
+                }
             }
         }
-
         System.out.println(board);
+
+
     }
 
 }

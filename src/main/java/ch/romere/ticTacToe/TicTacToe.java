@@ -25,7 +25,7 @@ public class TicTacToe extends Game {
 
 
     @Override
-    public void printBoard() {
+    public void printBoard(boolean lol, boolean test) {
         String sb = getLine(2) + System.lineSeparator() +
                 HORIZONTAL_LINE + System.lineSeparator() +
                 getLine(1) + System.lineSeparator() +
@@ -78,7 +78,7 @@ public class TicTacToe extends Game {
     @Override
     public void start() {
         printTitle();
-        printBoard();
+        printBoard(false, false);
 
 
         Collections.shuffle(players);
