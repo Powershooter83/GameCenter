@@ -2,6 +2,7 @@ package ch.romere.memory;
 
 import ch.romere.board.Board;
 import ch.romere.board.Position;
+import ch.romere.exceptions.InputIsNotValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.player.Player;
@@ -51,7 +52,18 @@ public class Memory extends Game {
     @Override
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
-            int input = playerInput.getInputNumber();
+            int input;
+            try {
+                input = playerInput.getInputNumber();
+            } catch (InputIsNotValidPositionException e) {
+                System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
+                continue;
+            }
+
+            if (input > BOARD_WIDTH * BOARD_HEIGHT || input <= 0) {
+                System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
+                continue;
+            }
 
 
             this.board.getPieces().stream().filter(card -> ((Card) card).getNumber() == input).forEach(card -> {
@@ -100,7 +112,6 @@ public class Memory extends Game {
                 }
 
             }
-
 
         }
     }

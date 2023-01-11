@@ -2,6 +2,7 @@ package ch.romere.connectFour;
 
 import ch.romere.board.Board;
 import ch.romere.board.Position;
+import ch.romere.exceptions.InputIsNotValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.logic.Piece;
@@ -42,10 +43,16 @@ public class ConnectFour extends Game {
 
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
-            Position position = new Position(playerInput.getInputNumber(), 0);
+            Position position;
+            try {
+                position = new Position(playerInput.getInputNumber(), 0);
+            } catch (InputIsNotValidPositionException e) {
+                System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
+                continue;
+            }
 
             if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
-                System.out.println("Die X-Achse muss zwischen 1 und " + BOARD_WIDTH + " liegen");
+                System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
                 continue;
             }
 

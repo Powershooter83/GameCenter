@@ -27,7 +27,11 @@ public class PlayerInput {
 
     public int getInputNumber() {
         String input = scanner.nextLine().replaceAll("\\s", "");
-        return Integer.parseInt(input);
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new InputIsNotValidPositionException();
+        }
     }
 
 
