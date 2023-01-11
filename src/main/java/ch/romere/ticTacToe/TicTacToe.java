@@ -9,7 +9,6 @@ import ch.romere.player.Player;
 
 import java.util.List;
 
-;
 
 public class TicTacToe extends Game {
 
