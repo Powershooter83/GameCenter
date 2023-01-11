@@ -10,6 +10,7 @@ import ch.romere.utils.PlayerInput;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +18,6 @@ public abstract class Game implements Display {
     protected final PlayerInput playerInput = new PlayerInput();
     public int BOARD_HEIGHT;
     public int BOARD_WIDTH;
-
     public int BOARD_CELL_WIDTH = 5;
     public int BOARD_CELL_HEIGHT = 2;
 
@@ -25,7 +25,11 @@ public abstract class Game implements Display {
     protected List<Player> players;
     protected Player currentPlayer;
 
+    protected GameState gameState = GameState.START;
+
     public abstract void start();
+
+    public abstract void eventHandler();
 
     public void printVictory(Player victoryPlayer) throws Exception {
         System.out.println(System.lineSeparator());
@@ -141,7 +145,20 @@ public abstract class Game implements Display {
         }
         System.out.println(board);
 
+    }
 
+    @Override
+    public void printStartingPlayer(){
+        System.out.println("Der Spieler " + currentPlayer.getName() + " beginnt die Partie!");
+    }
+
+    public Player getRandomPlayer(){
+        Collections.shuffle(players);
+        return players.get(0);
+    }
+
+    public void swapCurrentPlayer(){
+        this.currentPlayer = this.players.stream().filter(player -> player != currentPlayer).toList().get(0);
     }
 
 }

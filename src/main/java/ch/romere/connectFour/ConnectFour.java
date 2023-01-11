@@ -9,9 +9,10 @@ import ch.romere.ticTacToe.GameObjectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ConnectFour extends Game {
-    public ConnectFour(ArrayList<Player> players) {
+    public ConnectFour(List<Player> players) {
         BOARD_WIDTH = 7;
         BOARD_HEIGHT = 6;
         BOARD_CELL_HEIGHT = 2;
@@ -38,7 +39,7 @@ public class ConnectFour extends Game {
     @Override
     public void start() {
         printTitle();
-        printBoard(false, false);
+        printBoard(true, false);
 
 
         Collections.shuffle(players);

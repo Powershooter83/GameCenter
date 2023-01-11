@@ -18,7 +18,7 @@ public class Memory extends Game {
 
     private List<String> cards = new ArrayList<>();
 
-    public Memory(ArrayList<Player> players) {
+    public Memory(List<Player> players) {
         BOARD_WIDTH = 6;
         BOARD_HEIGHT = 3;
         BOARD_CELL_WIDTH = 21;
