@@ -81,7 +81,7 @@ public class TicTacToe extends Game {
             hasHorizontalLine = piece != null && piece.getPlayer() == currentPlayer;
 
             Piece piece2 = board.getPieceAtPosition(new Position(yAxis, xAxis));
-            hasVerticalLine = piece != null && piece2.getPlayer() == currentPlayer;
+            hasVerticalLine = piece2 != null && piece2.getPlayer() == currentPlayer;
          }
 
          if (!hasLine) {

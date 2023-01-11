@@ -3,6 +3,7 @@ package ch.romere.connectFour;
 import ch.romere.logic.Game;
 import ch.romere.board.Board;
 import ch.romere.logic.GameState;
+import ch.romere.logic.Piece;
 import ch.romere.player.Player;
 import ch.romere.board.Position;
 import ch.romere.ticTacToe.GameObject;
@@ -75,77 +76,32 @@ public class ConnectFour extends Game {
 
    }
 
-   private boolean checkForWin() {
-      for (int i = 0; i < BOARD_HEIGHT; i++) {
+   private boolean hasHorizontalOrVerticalLine() {
+      boolean hasLine = false;
+      for (int yAxis = 0; yAxis < BOARD_HEIGHT; yAxis++) {
 
-         if (i < BOARD_HEIGHT - 3) {
-            for (int horizontal = 0; horizontal < BOARD_WIDTH; horizontal++) {
-               try {
-                  GameObject pieceAtPosition = (GameObject) board.getPieceAtPosition(new Position(horizontal, i));
-                  GameObject pieceAtPosition2 = (GameObject) board.getPieceAtPosition(new Position(horizontal, i + 1));
-                  GameObject pieceAtPosition3 = (GameObject) board.getPieceAtPosition(new Position(horizontal, i + 2));
-                  GameObject pieceAtPosition4 = (GameObject) board.getPieceAtPosition(new Position(horizontal, i + 3));
+         for (int xAxis = 0; xAxis < BOARD_WIDTH; xAxis++) {
+            boolean hasHorizontalLine = false;
+            boolean hasVerticalLine = false;
+            for (int addAxis = 0; addAxis < 4; addAxis++) {
+               Piece piece = board.getPieceAtPosition(new Position(xAxis + addAxis, yAxis));
+               hasHorizontalLine = piece != null && piece.getPlayer() == currentPlayer;
 
-                  if (pieceAtPosition.getType() == pieceAtPosition2.getType() &&
-                        pieceAtPosition.getType() == pieceAtPosition3.getType() && pieceAtPosition4.getType() == pieceAtPosition.getType()) {
-                     return true;
-                  }
+               Piece piece2 = board.getPieceAtPosition(new Position(yAxis + addAxis, xAxis));
+               hasVerticalLine = piece2 != null && piece2.getPlayer() == currentPlayer;
+            }
 
-               } catch (NullPointerException ignored) {
-               }
+            if(!hasLine){
+               hasLine = hasHorizontalLine || hasVerticalLine;
             }
 
          }
 
-         for (int horizontal = 0; horizontal < BOARD_WIDTH - 3; horizontal++) {
-            if (i < 3) {
-               try {
-                  GameObject pieceAtPosition = (GameObject) board.getPieceAtPosition(new Position(horizontal, i));
-                  GameObject pieceAtPosition2 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 1, i + 1));
-                  GameObject pieceAtPosition3 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 2, i + 2));
-                  GameObject pieceAtPosition4 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 3, i + 3));
-
-                  if (pieceAtPosition.getType() == pieceAtPosition2.getType() &&
-                        pieceAtPosition.getType() == pieceAtPosition3.getType() && pieceAtPosition4.getType() == pieceAtPosition.getType()) {
-                     return true;
-                  }
-
-               } catch (NullPointerException ignored) {
-               }
-
-               try {
-                  GameObject pieceAtPosition = (GameObject) board.getPieceAtPosition(new Position(6 - horizontal, i));
-                  GameObject pieceAtPosition2 = (GameObject) board.getPieceAtPosition(new Position(6 - horizontal - 1, i + 1));
-                  GameObject pieceAtPosition3 = (GameObject) board.getPieceAtPosition(new Position(6 - horizontal - 2, i + 2));
-                  GameObject pieceAtPosition4 = (GameObject) board.getPieceAtPosition(new Position(6 - horizontal - 3, i + 3));
-
-                  if (pieceAtPosition.getType() == pieceAtPosition2.getType() &&
-                        pieceAtPosition.getType() == pieceAtPosition3.getType() && pieceAtPosition4.getType() == pieceAtPosition.getType()) {
-                     return true;
-                  }
-
-               } catch (NullPointerException ignored) {
-               }
-
-            }
-
-            try {
-               GameObject pieceAtPosition = (GameObject) board.getPieceAtPosition(new Position(horizontal, i));
-               GameObject pieceAtPosition2 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 1, i));
-               GameObject pieceAtPosition3 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 2, i));
-               GameObject pieceAtPosition4 = (GameObject) board.getPieceAtPosition(new Position(horizontal + 3, i));
-
-               if (pieceAtPosition.getType() == pieceAtPosition2.getType() &&
-                     pieceAtPosition.getType() == pieceAtPosition3.getType() && pieceAtPosition4.getType() == pieceAtPosition.getType()) {
-                  return true;
-               }
-
-            } catch (NullPointerException ignored) {
-            }
-
-         }
       }
-      return false;
+      return hasLine;
+   }
+
+   private boolean checkForWin() {
    }
 
    @Override
