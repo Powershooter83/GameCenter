@@ -6,10 +6,9 @@ import ch.romere.board.Position;
 import ch.romere.player.Player;
 import ch.romere.utils.ASCIIArtGenerator;
 import ch.romere.utils.Display;
-import ch.romere.utils.PlayerInput;
+import ch.romere.player.PlayerInput;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -78,7 +77,7 @@ public abstract class Game implements Display {
 
             for (int cellHeight = 0; cellHeight < BOARD_CELL_HEIGHT; cellHeight++) {
                 if(cellHeight == BOARD_CELL_HEIGHT / 2 && verticalLabeling){
-                    sb.append(StringUtils.center(String.valueOf(BOARD_HEIGHT - yAxis), 9)).append("| ");
+                    sb.append(StringUtils.center(getLetter(yAxis + 1), 9)).append("| ");
 
                 }else if(verticalLabeling){
                     sb.append("         | ");
@@ -145,6 +144,12 @@ public abstract class Game implements Display {
         }
         System.out.println(board);
 
+    }
+
+    private String getLetter(int value)
+    {
+        char letter = (char) ('A' - 1 + value);
+        return Character.toString(letter);
     }
 
     @Override

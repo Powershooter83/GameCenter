@@ -89,6 +89,11 @@ public class Memory extends Game {
         }
     }
 
+    @Override
+    public void eventHandler() {
+
+    }
+
     private void loadCards() {
         try {
             loadCardsFromFile();

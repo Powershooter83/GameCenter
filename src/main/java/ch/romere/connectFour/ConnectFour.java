@@ -102,6 +102,7 @@ public class ConnectFour extends Game {
    }
 
    private boolean checkForWin() {
+           return false;
    }
 
    @Override
