@@ -54,6 +54,7 @@ public class Memory extends Game {
     @Override
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
+
             int input;
             try {
                 input = playerInput.getInputNumber();
@@ -77,11 +78,17 @@ public class Memory extends Game {
             if (openCards == 2) {
                 List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
                 this.openCards = 0;
+                if (openCards.size() < 2) {
+                    this.openCards = 1;
+                    System.out.println("  -> Diese Karte wurde bereits geöffnet!");
+                    continue;
+                }
 
                 if (openCards.get(0).getName().equals(openCards.get(1).getName())) {
                     openCards.forEach(Card::setInactive);
                     System.out.println("Ein Paar wurde gefunden!");
-                    System.out.println("Player " + currentPlayer.getName() + " hat einen Punkt!");
+                    System.out.println("Spieler " + currentPlayer.getName() + " hat einen Punkt!");
+                    System.out.println("Der Spieler " + currentPlayer.getName() + " ist nochmals an der Reihe!");
                     this.playerPoints.put(currentPlayer, this.playerPoints.get(currentPlayer) + 1);
 
                     if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
