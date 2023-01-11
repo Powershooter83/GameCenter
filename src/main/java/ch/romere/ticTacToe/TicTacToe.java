@@ -19,6 +19,8 @@ public class TicTacToe extends Game {
         BOARD_HEIGHT = 3;
         BOARD_CELL_WIDTH = 3;
         BOARD_CELL_HEIGHT = 1;
+        hasHorizontalLabeling = true;
+        hasVerticalLabeling = true;
         this.players = players;
         board = new Board();
         start();
@@ -47,8 +49,8 @@ public class TicTacToe extends Game {
             }
             board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), positionAsCoordinates));
             checkForWin();
+            updateBoard(getOpponent(currentPlayer));
             swapCurrentPlayer();
-            updateBoard();
         }
     }
 
@@ -62,11 +64,12 @@ public class TicTacToe extends Game {
         players.get(1).setPiece(GameObjectType.O.toString());
         printStartingPlayer();
 
-        printBoard(true, true);
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
 
         gameState = GameState.RUNNING;
         eventHandler();
     }
+
 
     @Override
     public void printDescription() {
@@ -83,6 +86,8 @@ public class TicTacToe extends Game {
 
     private void checkForWin() {
         if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
+            updateBoard(currentPlayer);
+
             try {
                 printVictory(currentPlayer);
             } catch (Exception e) {

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class Game implements Display {
+public abstract class Game implements Display, GameLogic {
     protected final PlayerInput playerInput = new PlayerInput();
     public int BOARD_HEIGHT;
     public int BOARD_WIDTH;
@@ -23,12 +23,10 @@ public abstract class Game implements Display {
     protected Board board;
     protected List<Player> players;
     protected Player currentPlayer;
-
     protected GameState gameState = GameState.START;
 
-    public abstract void start();
-
-    public abstract void eventHandler();
+    protected boolean hasHorizontalLabeling = true;
+    protected boolean hasVerticalLabeling = true;
 
     public void printVictory(Player victoryPlayer) throws Exception {
         System.out.println(System.lineSeparator());
@@ -44,37 +42,47 @@ public abstract class Game implements Display {
 
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            if (scanner.nextLine().equals("menu")) {
-                new MainMenu(players);
-                break;
-            }
-            if (scanner.nextLine().equals("rematch")) {
-                start();
-                break;
-            }
-            if (scanner.nextLine().equals("exit")) {
-                System.exit(0);
+            switch (scanner.nextLine()) {
+                case "menu" -> {
+                    clearScreen();
+                    new MainMenu(players);
+                }
+                case "rematch" -> restart();
+                case "exit" -> System.exit(0);
             }
         }
     }
 
     @Override
-    public void updateBoard() {
+    public Player getOpponent(final Player player) {
+        return players.stream().filter(p -> !p.equals(player)).findFirst().orElse(null);
+    }
+
+
+    @Override
+    public void updateBoard(final Player player) {
         for (int i = 0; i < 50; i++) {
             System.out.println();
         }
         printTitle();
         printDescription();
-        System.out.println("  -> Der Spieler " + currentPlayer.getName() + " ist am Zug!");
+        System.out.println("  -> Der Spieler " + player.getName() + " ist am Zug!");
         printSpacer();
-        printBoard(true, true);
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
     }
 
     @Override
-    public void printSpacer(){
+    public void printSpacer() {
         for (int i = 0; i < 3; i++) {
             System.out.println();
         }
+    }
+
+    @Override
+    public void restart() {
+        currentPlayer = null;
+        board.getPieces().clear();
+        start();
     }
 
     @Override
@@ -183,5 +191,6 @@ public abstract class Game implements Display {
     public void swapCurrentPlayer() {
         this.currentPlayer = this.players.stream().filter(player -> player != currentPlayer).toList().get(0);
     }
+
 
 }

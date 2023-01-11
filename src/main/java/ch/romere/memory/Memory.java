@@ -25,6 +25,8 @@ public class Memory extends Game {
         BOARD_HEIGHT = 2;
         BOARD_CELL_WIDTH = 21;
         BOARD_CELL_HEIGHT = 5;
+        hasHorizontalLabeling = false;
+        hasVerticalLabeling = false;
         this.players = players;
         this.players.forEach(player -> playerPoints.put(player, 0));
         board = new Board();
@@ -42,7 +44,7 @@ public class Memory extends Game {
         players.get(1).setPiece(GameObjectType.O.toString());
         printStartingPlayer();
 
-        printBoard(false, false);
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
 
         gameState = GameState.RUNNING;
         eventHandler();
@@ -70,11 +72,12 @@ public class Memory extends Game {
                 ((Card) card).showText(true);
                 openCards++;
             });
-            updateBoard();
+            updateBoard(currentPlayer);
 
             if (openCards == 2) {
                 List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
                 this.openCards = 0;
+
                 if (openCards.get(0).getName().equals(openCards.get(1).getName())) {
                     openCards.forEach(Card::setInactive);
                     System.out.println("Ein Paar wurde gefunden!");
@@ -108,7 +111,7 @@ public class Memory extends Game {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    updateBoard();
+                    updateBoard(currentPlayer);
                 }
 
             }

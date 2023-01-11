@@ -35,7 +35,6 @@ public class MainMenu {
             throw new RuntimeException(e);
         }
         System.out.println(System.lineSeparator().repeat(3));
-
     }
 
     public void printPlayerSelection() {

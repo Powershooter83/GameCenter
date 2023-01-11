@@ -20,6 +20,8 @@ public class ConnectFour extends Game {
         BOARD_HEIGHT = 6;
         BOARD_CELL_HEIGHT = 2;
         BOARD_CELL_WIDTH = 10;
+        hasHorizontalLabeling = true;
+        hasVerticalLabeling = false;
         this.players = players;
         board = new Board();
         start();
@@ -35,7 +37,7 @@ public class ConnectFour extends Game {
         players.get(1).setPiece(GameObjectType.O.toString());
         printStartingPlayer();
 
-        printBoard(true, false);
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
 
         gameState = GameState.RUNNING;
         eventHandler();
@@ -78,8 +80,8 @@ public class ConnectFour extends Game {
             }
 
             board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), positionAsCoordinates));
-            updateBoard();
             checkForWin();
+            updateBoard(getOpponent(currentPlayer));
             swapCurrentPlayer();
         }
 
@@ -132,6 +134,8 @@ public class ConnectFour extends Game {
 
     private void checkForWin() {
         if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
+            updateBoard(currentPlayer);
+
             try {
                 printVictory(currentPlayer);
             } catch (Exception e) {
