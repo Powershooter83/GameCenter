@@ -25,12 +25,12 @@ public class TicTacToe extends Game {
          Position position = playerInput.getInputPosition();
 
          if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
-            System.out.println("Die X-Achse muss zwischen 1 und 3 liegen");
+            System.out.println("Die X-Achse muss zwischen 1 und " + BOARD_WIDTH + " liegen");
             continue;
          }
 
          if (position.yAxis() <= 0 || position.yAxis() > BOARD_HEIGHT) {
-            System.out.println("Die Y-Achse muss zwischen 1 und 3 liegen");
+            System.out.println("Die Y-Achse muss zwischen 1 und " + BOARD_WIDTH + " liegen");
             continue;
          }
 
