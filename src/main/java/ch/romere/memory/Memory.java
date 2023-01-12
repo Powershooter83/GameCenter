@@ -99,11 +99,7 @@ public class Memory extends Game {
 
                 if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
                     try {
-                        ASCIIArtGenerator.printTextArt("Resultat: " +
-                                        Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() +
-                                        " zu " +
-                                        Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL,
-                                ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+                        ASCIIArtGenerator.printTextArt("Resultat: " + Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() + " zu " + Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
 
                         printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
                     } catch (Exception e) {
@@ -156,11 +152,7 @@ public class Memory extends Game {
 
                 Collections.shuffle(this.board.getPieces());
 
-                this.board.getPieces().stream()
-                        .filter(Card.class::isInstance)
-                        .filter(piece -> ((Card) piece).getName() == null)
-                        .findFirst()
-                        .ifPresent(piece -> ((Card) piece).setName(type));
+                this.board.getPieces().stream().filter(Card.class::isInstance).filter(piece -> ((Card) piece).getName() == null).findFirst().ifPresent(piece -> ((Card) piece).setName(type));
             }
         }
     }
