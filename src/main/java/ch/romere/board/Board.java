@@ -3,7 +3,6 @@ package ch.romere.board;
 import ch.romere.logic.Piece;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Board {
 
@@ -21,16 +20,8 @@ public class Board {
         return pieces.stream().filter(piece -> piece.getPosition().equals(position)).findFirst().orElse(null);
     }
 
-    public List<Piece> getPiecesAtPositions(final List<Position> positions) {
-        final ArrayList<Piece> pieces = new ArrayList<>();
-        positions.forEach(position -> pieces.add(getPieceAtPosition(position)));
+    public ArrayList<Piece> getPieces() {
         return pieces;
     }
-
-    public ArrayList<Piece> getPieces(){
-        return pieces;
-    }
-
-
 
 }
