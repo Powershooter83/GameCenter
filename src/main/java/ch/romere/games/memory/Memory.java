@@ -116,12 +116,6 @@ public class Memory extends Game {
         }
     }
 
-
-    private void checkForPair(){
-
-    }
-
-
     private void loadCardsFromFile() {
         try {
             this.cards = Files.readAllLines(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getFile()).toPath());

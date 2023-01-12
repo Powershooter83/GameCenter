@@ -3,9 +3,9 @@ package ch.romere.logic;
 import ch.romere.Menu;
 import ch.romere.board.Board;
 import ch.romere.board.Position;
+import ch.romere.games.linegames.GameObjectType;
 import ch.romere.player.Player;
 import ch.romere.player.PlayerInput;
-import ch.romere.games.linegames.GameObjectType;
 import ch.romere.utils.ASCIIArtGenerator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,12 +50,31 @@ public abstract class Game implements Display, GameLogic {
         }
         System.out.println("Herzliche Gratulation!");
         System.out.println(System.lineSeparator());
+        printMenu();
+        menuInput();
+    }
+
+    public void printDraw() {
+        System.out.println(System.lineSeparator());
+        try {
+            ASCIIArtGenerator.printTextArt("UNENTSCHIEDEN!", 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, "$");
+        } catch (Exception ignored) {
+
+        }
+        System.out.println(System.lineSeparator());
+        printMenu();
+        menuInput();
+    }
+
+    private void printMenu() {
         System.out.println("========================================");
         System.out.println("= 'menu' gehe zum Menu                 =");
         System.out.println("= 'rematch' fuer eine Revanche         =");
         System.out.println("= 'exit' um das Spiel zu verlassen.    =");
         System.out.println("========================================");
+    }
 
+    private void menuInput() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             switch (scanner.nextLine()) {
@@ -68,6 +87,7 @@ public abstract class Game implements Display, GameLogic {
             }
         }
     }
+
 
     @Override
     public Player getOpponent(final Player player) {
@@ -240,5 +260,10 @@ public abstract class Game implements Display, GameLogic {
         System.out.println(gameDescription);
         printSpacer();
     }
+
+    public boolean boardIsFull() {
+        return board.getPieces().size() == BOARD_WIDTH * BOARD_HEIGHT;
+    }
+
 
 }

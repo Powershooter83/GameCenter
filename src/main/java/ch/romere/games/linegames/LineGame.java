@@ -33,10 +33,14 @@ public abstract class LineGame extends Game {
     }
 
     protected void checkForWin() {
-        if (!hasLine()) {
+        if (!hasLine() && !boardIsFull()) {
             return;
         }
         updateBoard(currentPlayer);
+        if (boardIsFull()) {
+            printDraw();
+            return;
+        }
         printVictory(currentPlayer);
     }
 
