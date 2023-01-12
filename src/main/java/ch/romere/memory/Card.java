@@ -5,21 +5,22 @@ import ch.romere.logic.Piece;
 
 public class Card extends Piece {
 
-    private String name;
     private final int number;
+    private String name;
     private boolean isActive = true;
     private boolean showText = false;
+
     public Card(final int Number, final Position position) {
         this.number = Number;
         this.position = position;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return this.name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public int getNumber() {
@@ -38,7 +39,7 @@ public class Card extends Piece {
         this.isActive = false;
     }
 
-    public boolean isActive(){
+    public boolean isActive() {
         return this.isActive;
     }
 

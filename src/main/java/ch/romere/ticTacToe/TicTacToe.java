@@ -2,12 +2,11 @@ package ch.romere.ticTacToe;
 
 import ch.romere.board.Board;
 import ch.romere.board.Position;
-import ch.romere.exceptions.InputIsNotValidPositionException;
+import ch.romere.exceptions.InputIsNotAValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.logic.Piece;
 import ch.romere.player.Player;
-import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.List;
 
@@ -15,6 +14,13 @@ import java.util.List;
 public class TicTacToe extends Game {
 
     public TicTacToe(final List<Player> players) {
+        super("TicTacToe", """
+                Tic Tac Toe ist ein Spiel fuer zwei Spieler.\s
+                Jeder Spieler hat ein Symbol, das er auf dem Spielfeld platzieren kann.\s
+                Ziel ist es, drei seiner Symbole in einer Reihe zu platzieren.\s
+                Die Reihen koennen horizontal, vertikal oder diagonal sein.\s
+                Gewonnen hat der Spieler, der zuerst drei seiner Symbole in einer Reihe platziert hat.\s
+                Koordinaten in dem Format: [A1, B2, C3, ...] in die Console schreiben.""");
         BOARD_WIDTH = 3;
         BOARD_HEIGHT = 3;
         BOARD_CELL_WIDTH = 3;
@@ -31,7 +37,7 @@ public class TicTacToe extends Game {
             Position position;
             try {
                 position = playerInput.getInputPosition();
-            } catch (InputIsNotValidPositionException e) {
+            } catch (InputIsNotAValidPositionException e) {
                 System.out.println("  -> Beachte bitte das Format: [A1, B2, C3...]");
                 continue;
             }
@@ -54,45 +60,10 @@ public class TicTacToe extends Game {
         }
     }
 
-    @Override
-    public void start() {
-        printTitle();
-        printDescription();
-
-        currentPlayer = getRandomPlayer();
-        currentPlayer.setPiece(GameObjectType.X.toString());
-        players.get(1).setPiece(GameObjectType.O.toString());
-        printStartingPlayer();
-
-        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
-
-        gameState = GameState.RUNNING;
-        eventHandler();
-    }
-
-
-    @Override
-    public void printDescription() {
-        System.out.println("""
-                Tic Tac Toe ist ein Spiel fuer zwei Spieler.\s
-                Jeder Spieler hat ein Symbol, das er auf dem Spielfeld platzieren kann.\s
-                Ziel ist es, drei seiner Symbole in einer Reihe zu platzieren.\s
-                Die Reihen koennen horizontal, vertikal oder diagonal sein.\s
-                Gewonnen hat der Spieler, der zuerst drei seiner Symbole in einer Reihe platziert hat.\s
-                Koordinaten in dem Format: [A1, B2, C3, ...] in die Console schreiben.""");
-        printSpacer();
-    }
-
-
     private void checkForWin() {
         if (hasHorizontalOrVerticalLine() || hasDiagonalLine()) {
             updateBoard(currentPlayer);
-
-            try {
-                printVictory(currentPlayer);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            printVictory(currentPlayer);
         }
     }
 
@@ -130,19 +101,6 @@ public class TicTacToe extends Game {
         }
 
         return hasVerticalLineToRight || hasVerticalLineToLeft;
-    }
-
-
-    @Override
-    public void printTitle() {
-        clearScreen();
-        try {
-            ASCIIArtGenerator.printTextArt("Tic Tac Toe", ASCIIArtGenerator.ART_SIZE_SMALL,
-                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        printSpacer();
     }
 
 }

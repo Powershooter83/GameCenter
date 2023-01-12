@@ -10,25 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainMenu {
+public class Menu {
 
     private final List<Player> players;
     private final Scanner scanner = new Scanner(System.in);
 
-    public MainMenu(final List<Player> players) {
+    public Menu(final List<Player> players) {
         this.players = players;
-        printMenu();
+        printTitle();
+        printGames();
         gameSelection();
     }
 
-    public MainMenu() {
+    public Menu() {
         this.players = new ArrayList<>();
-        printMenu();
+        printTitle();
         printPlayerSelection();
+        printGames();
         gameSelection();
     }
 
-    public void printMenu() {
+    public void printTitle() {
         try {
             ASCIIArtGenerator.printTextArt("Welcome to the Game Center", ASCIIArtGenerator.ART_SIZE_SMALL);
         } catch (Exception e) {
@@ -46,13 +48,15 @@ public class MainMenu {
         System.out.println("\nHerzlich Willkommen " + players.get(0).getName() + " und " + players.get(1).getName() + "!");
     }
 
-    public void gameSelection() {
+    public void printGames() {
         System.out.println("Bitte selektiere ein Spiel zum fortfahren:");
         System.out.println("1. TicTacToe");
         System.out.println("2. VierGewinnt");
         System.out.println("3. Memory");
         System.out.println("4. Exit");
+    }
 
+    public void gameSelection() {
         while (true) {
             switch (scanner.nextLine()) {
                 case "1":

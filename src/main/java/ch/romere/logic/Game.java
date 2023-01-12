@@ -1,10 +1,11 @@
 package ch.romere.logic;
 
-import ch.romere.MainMenu;
+import ch.romere.Menu;
 import ch.romere.board.Board;
 import ch.romere.board.Position;
 import ch.romere.player.Player;
 import ch.romere.player.PlayerInput;
+import ch.romere.ticTacToe.GameObjectType;
 import ch.romere.utils.ASCIIArtGenerator;
 import ch.romere.utils.Display;
 import org.apache.commons.lang3.StringUtils;
@@ -15,11 +16,13 @@ import java.util.Scanner;
 
 public abstract class Game implements Display, GameLogic {
     protected final PlayerInput playerInput = new PlayerInput();
-    public int BOARD_HEIGHT;
-    public int BOARD_WIDTH;
-    public int BOARD_CELL_WIDTH = 5;
-    public int BOARD_CELL_HEIGHT = 2;
 
+    protected final String gameName;
+    protected final String gameDescription;
+    protected int BOARD_HEIGHT;
+    protected int BOARD_WIDTH;
+    protected int BOARD_CELL_WIDTH;
+    protected int BOARD_CELL_HEIGHT;
     protected Board board;
     protected List<Player> players;
     protected Player currentPlayer;
@@ -28,10 +31,19 @@ public abstract class Game implements Display, GameLogic {
     protected boolean hasHorizontalLabeling = true;
     protected boolean hasVerticalLabeling = true;
 
-    public void printVictory(Player victoryPlayer) throws Exception {
+    protected Game(final String gameName, final String gameDescription) {
+        this.gameName = gameName;
+        this.gameDescription = gameDescription;
+    }
+
+    public void printVictory(Player victoryPlayer) {
         System.out.println(System.lineSeparator());
-        ASCIIArtGenerator.printTextArt(victoryPlayer.getName(), 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
-        ASCIIArtGenerator.printTextArt("hat gewonnen!", 12, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
+        try {
+            ASCIIArtGenerator.printTextArt(victoryPlayer.getName(), 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
+            ASCIIArtGenerator.printTextArt("hat gewonnen!", 12, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
+        } catch (Exception ignored) {
+
+        }
         System.out.println("Herzliche Gratulation!");
         System.out.println(System.lineSeparator());
         System.out.println("========================================");
@@ -45,7 +57,7 @@ public abstract class Game implements Display, GameLogic {
             switch (scanner.nextLine()) {
                 case "menu" -> {
                     clearScreen();
-                    new MainMenu(players);
+                    new Menu(players);
                 }
                 case "rematch" -> restart();
                 case "exit" -> System.exit(0);
@@ -112,8 +124,7 @@ public abstract class Game implements Display, GameLogic {
                     if (xAxis != 0 || !verticalLabeling) {
                         sb.append("| ");
                     }
-                    if (this.board.getPieceAtPosition(new Position(xAxis, yAxis)) != null &&
-                            cellHeight == BOARD_CELL_HEIGHT / 2) {
+                    if (this.board.getPieceAtPosition(new Position(xAxis, yAxis)) != null && cellHeight == BOARD_CELL_HEIGHT / 2) {
                         String text = this.board.getPieceAtPosition(new Position(xAxis, yAxis)).toString();
 
                         if (text == null) {
@@ -183,6 +194,23 @@ public abstract class Game implements Display, GameLogic {
         printSpacer();
     }
 
+    @Override
+    public void start() {
+        printTitle();
+        printDescription();
+
+        currentPlayer = getRandomPlayer();
+        currentPlayer.setPiece(GameObjectType.X.toString());
+        players.get(1).setPiece(GameObjectType.O.toString());
+        printStartingPlayer();
+
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
+
+        gameState = GameState.RUNNING;
+        eventHandler();
+    }
+
+
     public Player getRandomPlayer() {
         Collections.shuffle(players);
         return players.get(0);
@@ -192,5 +220,22 @@ public abstract class Game implements Display, GameLogic {
         this.currentPlayer = this.players.stream().filter(player -> player != currentPlayer).toList().get(0);
     }
 
+    @Override
+    public void printTitle() {
+        clearScreen();
+        try {
+            ASCIIArtGenerator.printTextArt(this.gameName, ASCIIArtGenerator.ART_SIZE_SMALL,
+                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        printSpacer();
+    }
+
+    @Override
+    public void printDescription() {
+        System.out.println(gameDescription);
+        printSpacer();
+    }
 
 }

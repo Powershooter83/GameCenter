@@ -2,7 +2,7 @@ package ch.romere.memory;
 
 import ch.romere.board.Board;
 import ch.romere.board.Position;
-import ch.romere.exceptions.InputIsNotValidPositionException;
+import ch.romere.exceptions.InputIsNotAValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.player.Player;
@@ -21,6 +21,11 @@ public class Memory extends Game {
     private List<String> cards = new ArrayList<>();
 
     public Memory(List<Player> players) {
+        super("Memory", """
+                Memory ist ein Gedaechtnisspiel, bei dem die Spieler versuchen, so viele Paare wie moeglich zu finden.
+                Die Spieler muessen die Kartenpaare aufdecken und versuchen, sie zu finden.
+                Wenn ein Spieler ein Paar gefunden hat, erhaelt er einen Punkt.
+                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""");
         BOARD_WIDTH = 2;
         BOARD_HEIGHT = 2;
         BOARD_CELL_WIDTH = 21;
@@ -54,11 +59,10 @@ public class Memory extends Game {
     @Override
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
-
             int input;
             try {
                 input = playerInput.getInputNumber();
-            } catch (InputIsNotValidPositionException e) {
+            } catch (InputIsNotAValidPositionException e) {
                 System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
                 continue;
             }
@@ -75,53 +79,54 @@ public class Memory extends Game {
             });
             updateBoard(currentPlayer);
 
-            if (openCards == 2) {
-                List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
-                this.openCards = 0;
-                if (openCards.size() < 2) {
-                    this.openCards = 1;
-                    System.out.println("  -> Diese Karte wurde bereits geöffnet!");
-                    continue;
-                }
+            if (openCards != 2) {
+                continue;
+            }
+            List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
+            this.openCards = 0;
+            if (openCards.size() < 2) {
+                this.openCards = 1;
+                System.out.println("  -> Diese Karte wurde bereits geöffnet!");
+                continue;
+            }
 
-                if (openCards.get(0).getName().equals(openCards.get(1).getName())) {
-                    openCards.forEach(Card::setInactive);
-                    System.out.println("Ein Paar wurde gefunden!");
-                    System.out.println("Spieler " + currentPlayer.getName() + " hat einen Punkt!");
-                    System.out.println("Der Spieler " + currentPlayer.getName() + " ist nochmals an der Reihe!");
-                    this.playerPoints.put(currentPlayer, this.playerPoints.get(currentPlayer) + 1);
+            if (openCards.get(0).getName().equals(openCards.get(1).getName())) {
+                openCards.forEach(Card::setInactive);
+                System.out.println("Ein Paar wurde gefunden!");
+                System.out.println("Spieler " + currentPlayer.getName() + " hat einen Punkt!");
+                System.out.println("Der Spieler " + currentPlayer.getName() + " ist nochmals an der Reihe!");
+                this.playerPoints.put(currentPlayer, this.playerPoints.get(currentPlayer) + 1);
 
-                    if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
-                        try {
-                            ASCIIArtGenerator.printTextArt("Resultat: " +
-                                            Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() +
-                                            " zu " +
-                                            Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL,
-                                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
-
-                            printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                        System.out.println("Alle Paare wurden gefunden!");
-                        break;
-                    }
-
-                } else {
-                    openCards.forEach(card -> card.showText(false));
-                    System.out.println("  -> Es wurde kein Paar gefunden!");
-                    swapCurrentPlayer();
-                    System.out.println("  -> Der Spieler " + currentPlayer.getName() + " ist nun an der Reihe.");
-                    System.out.println("  -> Die Karten werden in 5 Sekunden wieder verdeckt.");
+                if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
                     try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
+                        ASCIIArtGenerator.printTextArt("Resultat: " +
+                                        Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() +
+                                        " zu " +
+                                        Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL,
+                                ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+
+                        printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                    updateBoard(currentPlayer);
+                    System.out.println("Alle Paare wurden gefunden!");
+                    break;
                 }
 
+            } else {
+                openCards.forEach(card -> card.showText(false));
+                System.out.println("  -> Es wurde kein Paar gefunden!");
+                swapCurrentPlayer();
+                System.out.println("  -> Der Spieler " + currentPlayer.getName() + " ist nun an der Reihe.");
+                System.out.println("  -> Die Karten werden in 5 Sekunden wieder verdeckt.");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateBoard(currentPlayer);
             }
+
 
         }
     }
@@ -160,33 +165,9 @@ public class Memory extends Game {
         }
     }
 
-
-    @Override
-    public void printTitle() {
-        clearScreen();
-        try {
-            ASCIIArtGenerator.printTextArt("Memory", ASCIIArtGenerator.ART_SIZE_SMALL,
-                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        printSpacer();
-    }
-
-    @Override
-    public void printDescription() {
-        System.out.println("""
-                Memory ist ein Gedaechtnisspiel, bei dem die Spieler versuchen, so viele Paare wie moeglich zu finden.
-                Die Spieler muessen die Kartenpaare aufdecken und versuchen, sie zu finden.
-                Wenn ein Spieler ein Paar gefunden hat, erhaelt er einen Punkt.
-                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""");
-        printSpacer();
-    }
-
     private void loadCardsFromFile() throws IOException {
         this.cards = Files.readAllLines(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getFile()).toPath());
     }
-
 
     private String pickRandom() {
         Collections.shuffle(cards);
