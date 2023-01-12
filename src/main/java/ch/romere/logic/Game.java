@@ -5,7 +5,7 @@ import ch.romere.board.Board;
 import ch.romere.board.Position;
 import ch.romere.player.Player;
 import ch.romere.player.PlayerInput;
-import ch.romere.ticTacToe.GameObjectType;
+import ch.romere.games.linegames.GameObjectType;
 import ch.romere.utils.ASCIIArtGenerator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,23 +16,28 @@ import java.util.Scanner;
 public abstract class Game implements Display, GameLogic {
     protected final PlayerInput playerInput = new PlayerInput();
 
-    protected final String gameName;
-    protected final String gameDescription;
-    protected int BOARD_HEIGHT;
-    protected int BOARD_WIDTH;
-    protected int BOARD_CELL_WIDTH;
-    protected int BOARD_CELL_HEIGHT;
+    protected final String gameName, gameDescription;
+    protected int BOARD_HEIGHT, BOARD_WIDTH, BOARD_CELL_WIDTH, BOARD_CELL_HEIGHT;
     protected Board board;
     protected List<Player> players;
     protected Player currentPlayer;
     protected GameState gameState = GameState.START;
 
-    protected boolean hasHorizontalLabeling = true;
-    protected boolean hasVerticalLabeling = true;
+    protected boolean hasHorizontalLabeling;
+    protected boolean hasVerticalLabeling;
 
-    protected Game(final String gameName, final String gameDescription) {
+    protected Game(final String gameName, final String gameDescription, final int BOARD_HEIGHT, final int BOARD_WIDTH, final int BOARD_CELL_WIDTH, final int BOARD_CELL_HEIGHT, final boolean hasHorizontalLabeling, final boolean hasVerticalLabeling, final List<Player> players) {
         this.gameName = gameName;
         this.gameDescription = gameDescription;
+        this.BOARD_HEIGHT = BOARD_HEIGHT;
+        this.BOARD_WIDTH = BOARD_WIDTH;
+        this.BOARD_CELL_WIDTH = BOARD_CELL_WIDTH;
+        this.BOARD_CELL_HEIGHT = BOARD_CELL_HEIGHT;
+        this.hasHorizontalLabeling = hasHorizontalLabeling;
+        this.hasVerticalLabeling = hasVerticalLabeling;
+        this.players = players;
+        board = new Board();
+
     }
 
     public void printVictory(Player victoryPlayer) {
@@ -223,8 +228,7 @@ public abstract class Game implements Display, GameLogic {
     public void printTitle() {
         clearScreen();
         try {
-            ASCIIArtGenerator.printTextArt(this.gameName, ASCIIArtGenerator.ART_SIZE_SMALL,
-                    ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+            ASCIIArtGenerator.printTextArt(this.gameName, ASCIIArtGenerator.ART_SIZE_SMALL, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

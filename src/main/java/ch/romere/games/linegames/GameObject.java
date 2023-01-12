@@ -1,4 +1,4 @@
-package ch.romere.ticTacToe;
+package ch.romere.games.linegames;
 
 import ch.romere.board.Position;
 import ch.romere.logic.Piece;

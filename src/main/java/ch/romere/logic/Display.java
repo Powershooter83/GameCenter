@@ -18,4 +18,6 @@ public interface Display {
 
     void clearScreen();
 
+    void printFormatError();
+
 }

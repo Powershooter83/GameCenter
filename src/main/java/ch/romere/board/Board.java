@@ -1,6 +1,7 @@
 package ch.romere.board;
 
 import ch.romere.logic.Piece;
+import ch.romere.player.Player;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,11 @@ public class Board {
 
     public Piece getPieceAtPosition(final Position position) {
         return pieces.stream().filter(piece -> piece.getPosition().equals(position)).findFirst().orElse(null);
+    }
+
+    public Player getPlayerOfPieceAtPosition(final Position position) {
+        Piece pieceOfPlayer = pieces.stream().filter(piece -> piece.getPosition().equals(position)).findFirst().orElse(null);
+        return pieceOfPlayer != null ? pieceOfPlayer.getPlayer() : null;
     }
 
     public ArrayList<Piece> getPieces() {

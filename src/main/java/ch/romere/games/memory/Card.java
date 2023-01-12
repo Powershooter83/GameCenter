@@ -1,4 +1,4 @@
-package ch.romere.memory;
+package ch.romere.games.memory;
 
 import ch.romere.board.Position;
 import ch.romere.logic.Piece;

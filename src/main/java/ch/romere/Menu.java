@@ -1,9 +1,9 @@
 package ch.romere;
 
-import ch.romere.connectFour.ConnectFour;
-import ch.romere.memory.Memory;
+import ch.romere.games.linegames.connectFour.ConnectFour;
+import ch.romere.games.memory.Memory;
 import ch.romere.player.Player;
-import ch.romere.ticTacToe.TicTacToe;
+import ch.romere.games.linegames.ticTacToe.TicTacToe;
 import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.ArrayList;

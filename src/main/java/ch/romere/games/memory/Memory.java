@@ -1,12 +1,9 @@
-package ch.romere.memory;
+package ch.romere.games.memory;
 
-import ch.romere.board.Board;
 import ch.romere.board.Position;
-import ch.romere.exceptions.InputIsNotAValidPositionException;
 import ch.romere.logic.Game;
 import ch.romere.logic.GameState;
 import ch.romere.player.Player;
-import ch.romere.ticTacToe.GameObjectType;
 import ch.romere.utils.ASCIIArtGenerator;
 
 import java.io.File;
@@ -17,71 +14,41 @@ import java.util.*;
 public class Memory extends Game {
 
     private final HashMap<Player, Integer> playerPoints = new HashMap<>();
-    private int openCards = 0;
     private List<String> cards = new ArrayList<>();
+    private int openCards = 0;
 
     public Memory(List<Player> players) {
         super("Memory", """
                 Memory ist ein Gedaechtnisspiel, bei dem die Spieler versuchen, so viele Paare wie moeglich zu finden.
                 Die Spieler muessen die Kartenpaare aufdecken und versuchen, sie zu finden.
                 Wenn ein Spieler ein Paar gefunden hat, erhaelt er einen Punkt.
-                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""");
-        BOARD_WIDTH = 2;
-        BOARD_HEIGHT = 2;
-        BOARD_CELL_WIDTH = 21;
-        BOARD_CELL_HEIGHT = 5;
-        hasHorizontalLabeling = false;
-        hasVerticalLabeling = false;
-        this.players = players;
+                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""", 2, 2, 21, 5, false, false, players);
         this.players.forEach(player -> playerPoints.put(player, 0));
-        board = new Board();
-        start();
-    }
-
-    @Override
-    public void start() {
-        printTitle();
-        printDescription();
         loadCards();
-
-        currentPlayer = getRandomPlayer();
-        currentPlayer.setPiece(GameObjectType.X.toString());
-        players.get(1).setPiece(GameObjectType.O.toString());
-        printStartingPlayer();
-
-        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
-
-        gameState = GameState.RUNNING;
-        eventHandler();
-
+        start();
     }
 
     @Override
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
-            int input;
-            try {
-                input = playerInput.getInputNumber();
-            } catch (InputIsNotAValidPositionException e) {
+            Integer input = playerInput.getInputNumber();
+
+            if (input == null || input > BOARD_WIDTH * BOARD_HEIGHT || input <= 0) {
                 System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
                 continue;
             }
-
-            if (input > BOARD_WIDTH * BOARD_HEIGHT || input <= 0) {
-                System.out.println("  -> Beachte bitte das Format: [1, 2, 3...]");
-                continue;
-            }
-
 
             this.board.getPieces().stream().filter(card -> ((Card) card).getNumber() == input).forEach(card -> {
                 ((Card) card).showText(true);
                 openCards++;
             });
+
             updateBoard(currentPlayer);
 
             if (openCards != 2) {
                 continue;
             }
+
             List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
             this.openCards = 0;
             if (openCards.size() < 2) {
@@ -128,15 +95,10 @@ public class Memory extends Game {
     }
 
     private void loadCards() {
-        try {
-            loadCardsFromFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadCardsFromFile();
         Collections.shuffle(cards);
 
         int counting = 1;
-
 
         for (int yAxis = 0; yAxis < BOARD_HEIGHT; yAxis++) {
             for (int xAxis = 0; xAxis < BOARD_WIDTH; xAxis++) {
@@ -145,26 +107,36 @@ public class Memory extends Game {
             }
         }
 
-
-        for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT / 2; i++) {
-            String type = this.pickRandom();
-            for (int j = 0; j < 2; j++) {
-
+        for (int pairNumber = 0; pairNumber < BOARD_WIDTH * BOARD_HEIGHT / 2; pairNumber++) {
+            final String type = this.pickRandom();
+            for (int card = 0; card < 2; card++) {
                 Collections.shuffle(this.board.getPieces());
-
                 this.board.getPieces().stream().filter(Card.class::isInstance).filter(piece -> ((Card) piece).getName() == null).findFirst().ifPresent(piece -> ((Card) piece).setName(type));
             }
         }
     }
 
-    private void loadCardsFromFile() throws IOException {
-        this.cards = Files.readAllLines(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getFile()).toPath());
+
+    private void checkForPair(){
+
+    }
+
+
+    private void loadCardsFromFile() {
+        try {
+            this.cards = Files.readAllLines(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getFile()).toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String pickRandom() {
         Collections.shuffle(cards);
-        String type = cards.get(0);
-        cards.remove(0);
-        return type;
+        return cards.remove(0);
+    }
+
+    @Override
+    public void printFormatError() {
+
     }
 }
