@@ -1,18 +1,14 @@
 package ch.romere.utils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
  * ASCII Art Generator in Java.
  * Prints a given text as an ASCII text art on the console.
  * This code is licensed under - CC Attribution CC BY 4.0.
- * @author www.quickprogrammingtips.com
  *
+ * @author www.quickprogrammingtips.com
  */
 public class ASCIIArtGenerator {
 
@@ -23,28 +19,14 @@ public class ASCIIArtGenerator {
 
     private static final String DEFAULT_ART_SYMBOL = "*";
 
-    public enum ASCIIArtFont {
-        ART_FONT_DIALOG("Dialog"), ART_FONT_DIALOG_INPUT("DialogInput"),
-        ART_FONT_MONO("Monospaced"),ART_FONT_SERIF("Serif"), ART_FONT_SANS_SERIF("SansSerif");
-
-        private final String value;
-
-        public String getValue() {
-            return value;
-        }
-
-        ASCIIArtFont(String value) {
-            this.value = value;
-        }
-    }
-
     /**
      * Prints ASCII art for the specified text. For size, you can use predefined sizes or a custom size.
      * Usage - printTextArt("Hi",30,ASCIIArtFont.ART_FONT_SERIF,"@");
+     *
      * @param artText
      * @param textHeight - Use a predefined size or a custom type
-     * @param fontType - Use one of the available fonts
-     * @param artSymbol - Specify the character for printing the ascii art
+     * @param fontType   - Use one of the available fonts
+     * @param artSymbol  - Specify the character for printing the ascii art
      * @throws Exception
      */
     public static void printTextArt(String artText, int textHeight, ASCIIArtFont fontType, String artSymbol) throws Exception {
@@ -72,6 +54,7 @@ public class ASCIIArtGenerator {
     /**
      * Convenience method for printing ascii text art.
      * Font default - Dialog,  Art symbol default - *
+     *
      * @param artText
      * @param textHeight
      * @throws Exception
@@ -82,6 +65,7 @@ public class ASCIIArtGenerator {
 
     /**
      * Using the Current font and current art text find the width of the full image
+     *
      * @param textHeight
      * @param artText
      * @param fontName
@@ -96,6 +80,7 @@ public class ASCIIArtGenerator {
 
     /**
      * Find where the text baseline should be drawn so that the characters are within image
+     *
      * @param g
      * @param font
      * @return
@@ -104,5 +89,20 @@ public class ASCIIArtGenerator {
         FontMetrics metrics = g.getFontMetrics(font);
         int y = metrics.getAscent() - metrics.getDescent();
         return y;
+    }
+
+    public enum ASCIIArtFont {
+        ART_FONT_DIALOG("Dialog"), ART_FONT_DIALOG_INPUT("DialogInput"),
+        ART_FONT_MONO("Monospaced"), ART_FONT_SERIF("Serif"), ART_FONT_SANS_SERIF("SansSerif");
+
+        private final String value;
+
+        ASCIIArtFont(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }

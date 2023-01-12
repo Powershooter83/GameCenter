@@ -7,7 +7,6 @@ import ch.romere.player.Player;
 import ch.romere.player.PlayerInput;
 import ch.romere.ticTacToe.GameObjectType;
 import ch.romere.utils.ASCIIArtGenerator;
-import ch.romere.utils.Display;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

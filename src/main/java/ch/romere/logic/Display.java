@@ -1,4 +1,4 @@
-package ch.romere.utils;
+package ch.romere.logic;
 
 import ch.romere.player.Player;
 
