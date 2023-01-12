@@ -2,7 +2,6 @@ package ch.romere.games.linegames;
 
 import ch.romere.board.Position;
 import ch.romere.logic.Game;
-import ch.romere.logic.GameState;
 import ch.romere.player.Player;
 import ch.romere.utils.ASCIIArtGenerator;
 
@@ -48,23 +47,21 @@ public abstract class LineGame extends Game {
         menuInput();
     }
 
-    protected void checkForWin() {
+    public boolean checkForWin() {
         if (!hasLine() && !boardIsFull()) {
-            return;
+            return false;
         }
         updateBoard(currentPlayer);
         if (boardIsFull()) {
             printDraw();
-            return;
+            return true;
         }
         printVictory(currentPlayer);
+        return true;
     }
 
     protected void addPiece(final Position position) {
         board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), position));
-        checkForWin();
-        updateBoard(getOpponent(currentPlayer));
-        swapCurrentPlayer();
     }
 
     @Override
@@ -79,7 +76,6 @@ public abstract class LineGame extends Game {
 
         printBoard(hasHorizontalLabeling, hasVerticalLabeling);
 
-        gameState = GameState.RUNNING;
         eventHandler();
     }
 

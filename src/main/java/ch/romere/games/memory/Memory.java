@@ -1,9 +1,7 @@
 package ch.romere.games.memory;
 
 import ch.romere.board.Position;
-import ch.romere.games.linegames.GameObjectType;
 import ch.romere.logic.Game;
-import ch.romere.logic.GameState;
 import ch.romere.player.Player;
 import ch.romere.utils.ASCIIArtGenerator;
 
@@ -39,14 +37,13 @@ public class Memory extends Game {
         loadCards();
         printBoard(hasHorizontalLabeling, hasVerticalLabeling);
 
-        gameState = GameState.RUNNING;
         eventHandler();
     }
 
 
     @Override
     public void eventHandler() {
-        while (gameState == GameState.RUNNING) {
+        while (true) {
             Integer input = playerInput.getInputNumber();
 
             if (input == null || input > BOARD_WIDTH * BOARD_HEIGHT || input <= 0) {
@@ -59,6 +56,7 @@ public class Memory extends Game {
 
             if (this.board.getPieces().stream().filter(card -> ((Card) card).isActive() && ((Card) card).isTextShown()).count() == 2) {
                 checkForPair();
+                break;
             }
 
         }
@@ -73,25 +71,7 @@ public class Memory extends Game {
             System.out.println("     Spieler " + currentPlayer.getName() + " hat einen Punkt!");
             System.out.println("  !! Der Spieler " + currentPlayer.getName() + " ist nochmals an der Reihe !!");
             this.playerPoints.put(currentPlayer, this.playerPoints.get(currentPlayer) + 1);
-
-            if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
-                try {
-                    System.out.println(System.lineSeparator());
-                    System.out.println(" -> Alle Paare wurden gefunden! <- ");
-                    System.out.println(System.lineSeparator());
-                    ASCIIArtGenerator.printTextArt("Resultat: " + Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() + " zu " + Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
-
-                    if (Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() == Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue()) {
-                        printDraw();
-                        return;
-                    }
-
-                    printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return;
+            ;
 
         }
         openCards.forEach(card -> card.showText(false));
@@ -107,6 +87,29 @@ public class Memory extends Game {
         updateBoard(currentPlayer);
 
     }
+
+    public boolean checkForWin() {
+        if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
+            try {
+                System.out.println(System.lineSeparator());
+                System.out.println(" -> Alle Paare wurden gefunden! <- ");
+                System.out.println(System.lineSeparator());
+                ASCIIArtGenerator.printTextArt("Resultat: " + Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() + " zu " + Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue(), ASCIIArtGenerator.ART_SIZE_SMALL, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_SANS_SERIF, "$");
+
+                if (Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue() == Collections.min(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getValue()) {
+                    printDraw();
+                    return true;
+                }
+
+                printVictory(Collections.max(this.playerPoints.entrySet(), Map.Entry.comparingByValue()).getKey());
+                return true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return false;
+    }
+
 
     private void loadCards() {
         loadCardsFromFile();

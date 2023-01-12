@@ -2,7 +2,6 @@ package ch.romere.games.linegames.ticTacToe;
 
 import ch.romere.board.Position;
 import ch.romere.games.linegames.LineGame;
-import ch.romere.logic.GameState;
 import ch.romere.player.Player;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class TicTacToe extends LineGame {
     }
 
     public void eventHandler() {
-        while (gameState == GameState.RUNNING) {
+        while (true) {
             final Position position = playerInput.getInputPosition();
 
             if (position == null || position.xAxis() < 0 || position.xAxis() >= BOARD_WIDTH || position.yAxis() < 0 || position.yAxis() >= BOARD_HEIGHT) {
@@ -34,6 +33,11 @@ public class TicTacToe extends LineGame {
                 continue;
             }
             addPiece(position);
+            if(checkForWin()){
+                break;
+            }
+            updateBoard(getOpponent(currentPlayer));
+            swapCurrentPlayer();
         }
     }
 

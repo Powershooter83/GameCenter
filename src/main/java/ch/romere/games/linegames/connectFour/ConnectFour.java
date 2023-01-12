@@ -2,7 +2,6 @@ package ch.romere.games.linegames.connectFour;
 
 import ch.romere.board.Position;
 import ch.romere.games.linegames.LineGame;
-import ch.romere.logic.GameState;
 import ch.romere.player.Player;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public class ConnectFour extends LineGame {
 
     public ConnectFour(List<Player> players) {
         super(4, "Vier Gewinnt", """
-                Connect Four ist ein Brettspiel fuer zwei Spieler.\s
+                VierGewinnt ist ein Brettspiel fuer zwei Spieler.\s
                 Das Spielbrett besteht aus 7 Spalten und 6 Reihen.\s
                 Die Spieler setzen abwechselnd ihre Spielsteine in die Spalten.\s
                 Gewonnen hat der Spieler, der zuerst vier Spielsteine in einer Reihe hat.\s
@@ -21,7 +20,7 @@ public class ConnectFour extends LineGame {
     }
 
     public void eventHandler() {
-        while (gameState == GameState.RUNNING) {
+        while (true) {
             Position position = new Position(playerInput.getInputNumber(), 0);
 
             if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
@@ -51,6 +50,11 @@ public class ConnectFour extends LineGame {
             }
 
             addPiece(positionAsCoordinates);
+            if(checkForWin()){
+                break;
+            }
+            updateBoard(getOpponent(currentPlayer));
+            swapCurrentPlayer();
         }
 
     }

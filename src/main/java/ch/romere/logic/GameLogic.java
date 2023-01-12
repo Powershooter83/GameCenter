@@ -10,5 +10,7 @@ public interface GameLogic {
 
     void eventHandler();
 
+    boolean checkForWin();
+
     Player getOpponent(final Player player);
 }
