@@ -10,7 +10,6 @@ public abstract class Piece {
     public Position getPosition() {
         return position;
     }
-
     public Player getPlayer() {
         return player;
     }
