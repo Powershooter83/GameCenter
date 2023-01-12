@@ -21,7 +21,6 @@ public abstract class Game implements Display, GameLogic {
     protected Board board;
     protected List<Player> players;
     protected Player currentPlayer;
-    protected GameState gameState = GameState.START;
 
     protected boolean hasHorizontalLabeling;
     protected boolean hasVerticalLabeling;

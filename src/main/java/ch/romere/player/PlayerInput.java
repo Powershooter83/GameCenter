@@ -6,12 +6,22 @@ import java.util.Scanner;
 
 public class PlayerInput {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
+
+    public PlayerInput() {
+        scanner = new Scanner(System.in);
+    }
+
+    PlayerInput(final Scanner scanner) {
+        this.scanner = scanner;
+    }
+
 
     public Position getInputPosition() {
         final String input = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
 
-        if (input.length() != 2) {
+        if (input.length() != 2 || Character.isLetter(input.charAt(0)) && Character.isLetter(input.charAt(1)) ||
+                Character.isDigit(input.charAt(0)) && Character.isDigit(input.charAt(1))) {
             return null;
         }
 
