@@ -20,17 +20,12 @@ public class ConnectFour extends LineGame {
         start();
     }
 
-    @Override
-    public void printFormatError() {
-        System.out.println("  -> Dies ist keine gueltige Spaltennummer! Selektiere bitte eine andere. Format: [1, 2, 3...]");
-    }
-
     public void eventHandler() {
         while (gameState == GameState.RUNNING) {
             Position position = new Position(playerInput.getInputNumber(), 0);
 
             if (position.xAxis() <= 0 || position.xAxis() > BOARD_WIDTH) {
-                printFormatError();
+                System.out.println("  -> Dies ist keine gueltige Spaltennummer! Selektiere bitte eine andere. Format: [1, 2, 3...]");
                 continue;
             }
 

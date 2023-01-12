@@ -25,7 +25,7 @@ public class TicTacToe extends LineGame {
             final Position position = playerInput.getInputPosition();
 
             if (position == null || position.xAxis() < 0 || position.xAxis() >= BOARD_WIDTH || position.yAxis() < 0 || position.yAxis() >= BOARD_HEIGHT) {
-                printFormatError();
+                System.out.println("  -> Beachte bitte das Format: [A1, B2, C3...]");
                 continue;
             }
 
@@ -35,11 +35,6 @@ public class TicTacToe extends LineGame {
             }
             addPiece(position);
         }
-    }
-
-    @Override
-    public void printFormatError() {
-        System.out.println("  -> Beachte bitte das Format: [A1, B2, C3...]");
     }
 
 }

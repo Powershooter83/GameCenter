@@ -2,7 +2,9 @@ package ch.romere.games.linegames;
 
 import ch.romere.board.Position;
 import ch.romere.logic.Game;
+import ch.romere.logic.GameState;
 import ch.romere.player.Player;
+import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.List;
 
@@ -32,6 +34,20 @@ public abstract class LineGame extends Game {
         return hasLine;
     }
 
+    public void printVictory(Player victoryPlayer) {
+        System.out.println(System.lineSeparator());
+        try {
+            ASCIIArtGenerator.printTextArt(victoryPlayer.getName(), 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
+            ASCIIArtGenerator.printTextArt("hat gewonnen!", 12, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
+        } catch (Exception ignored) {
+
+        }
+        System.out.println("Herzliche Gratulation!");
+        System.out.println(System.lineSeparator());
+        printMenu();
+        menuInput();
+    }
+
     protected void checkForWin() {
         if (!hasLine() && !boardIsFull()) {
             return;
@@ -49,6 +65,22 @@ public abstract class LineGame extends Game {
         checkForWin();
         updateBoard(getOpponent(currentPlayer));
         swapCurrentPlayer();
+    }
+
+    @Override
+    public void start() {
+        printTitle();
+        printDescription();
+
+        currentPlayer = getRandomPlayer();
+        currentPlayer.setPiece(GameObjectType.X.toString());
+        players.get(1).setPiece(GameObjectType.O.toString());
+        printStartingPlayer();
+
+        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
+
+        gameState = GameState.RUNNING;
+        eventHandler();
     }
 
 }

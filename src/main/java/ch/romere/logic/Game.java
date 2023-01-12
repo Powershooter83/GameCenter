@@ -40,20 +40,6 @@ public abstract class Game implements Display, GameLogic {
 
     }
 
-    public void printVictory(Player victoryPlayer) {
-        System.out.println(System.lineSeparator());
-        try {
-            ASCIIArtGenerator.printTextArt(victoryPlayer.getName(), 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
-            ASCIIArtGenerator.printTextArt("hat gewonnen!", 12, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, victoryPlayer.getPiece());
-        } catch (Exception ignored) {
-
-        }
-        System.out.println("Herzliche Gratulation!");
-        System.out.println(System.lineSeparator());
-        printMenu();
-        menuInput();
-    }
-
     public void printDraw() {
         System.out.println(System.lineSeparator());
         try {
@@ -66,7 +52,7 @@ public abstract class Game implements Display, GameLogic {
         menuInput();
     }
 
-    private void printMenu() {
+    protected void printMenu() {
         System.out.println("========================================");
         System.out.println("= 'menu' gehe zum Menu                 =");
         System.out.println("= 'rematch' fuer eine Revanche         =");
@@ -74,7 +60,7 @@ public abstract class Game implements Display, GameLogic {
         System.out.println("========================================");
     }
 
-    private void menuInput() {
+    protected void menuInput() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             switch (scanner.nextLine()) {
@@ -88,12 +74,10 @@ public abstract class Game implements Display, GameLogic {
         }
     }
 
-
     @Override
     public Player getOpponent(final Player player) {
         return players.stream().filter(p -> !p.equals(player)).findFirst().orElse(null);
     }
-
 
     @Override
     public void updateBoard(final Player player) {
@@ -105,6 +89,20 @@ public abstract class Game implements Display, GameLogic {
         System.out.println("  -> Der Spieler " + player.getName() + " ist am Zug!");
         printSpacer();
         printBoard(hasHorizontalLabeling, hasVerticalLabeling);
+    }
+
+    public void printVictory(Player victoryPlayer) {
+        System.out.println(System.lineSeparator());
+        try {
+            ASCIIArtGenerator.printTextArt(victoryPlayer.getName(), 18, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, "#");
+            ASCIIArtGenerator.printTextArt("hat gewonnen!", 12, ASCIIArtGenerator.ASCIIArtFont.ART_FONT_MONO, "#");
+        } catch (Exception ignored) {
+
+        }
+        System.out.println("Herzliche Gratulation!");
+        System.out.println(System.lineSeparator());
+        printMenu();
+        menuInput();
     }
 
     @Override
@@ -208,8 +206,7 @@ public abstract class Game implements Display, GameLogic {
     }
 
     private String getLetter(int value) {
-        char letter = (char) ('A' - 1 + value);
-        return Character.toString(letter);
+        return Character.toString((char) ('A' - 1 + value));
     }
 
     @Override
@@ -217,23 +214,6 @@ public abstract class Game implements Display, GameLogic {
         System.out.println("  -> Der Spieler " + currentPlayer.getName() + " beginnt die Partie!");
         printSpacer();
     }
-
-    @Override
-    public void start() {
-        printTitle();
-        printDescription();
-
-        currentPlayer = getRandomPlayer();
-        currentPlayer.setPiece(GameObjectType.X.toString());
-        players.get(1).setPiece(GameObjectType.O.toString());
-        printStartingPlayer();
-
-        printBoard(hasHorizontalLabeling, hasVerticalLabeling);
-
-        gameState = GameState.RUNNING;
-        eventHandler();
-    }
-
 
     public Player getRandomPlayer() {
         Collections.shuffle(players);
