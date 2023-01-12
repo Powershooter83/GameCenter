@@ -1,9 +1,9 @@
 package ch.romere;
 
 import ch.romere.games.linegames.connectFour.ConnectFour;
+import ch.romere.games.linegames.ticTacToe.TicTacToe;
 import ch.romere.games.memory.Memory;
 import ch.romere.player.Player;
-import ch.romere.games.linegames.ticTacToe.TicTacToe;
 import ch.romere.utils.ASCIIArtGenerator;
 
 import java.util.ArrayList;
@@ -13,13 +13,14 @@ import java.util.Scanner;
 public class Menu {
 
     private final List<Player> players;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
     public Menu(final List<Player> players) {
         this.players = players;
         printTitle();
         printGames();
         gameSelection();
+        scanner = new Scanner(System.in);
     }
 
     public Menu() {
@@ -28,6 +29,13 @@ public class Menu {
         printPlayerSelection();
         printGames();
         gameSelection();
+        scanner = new Scanner(System.in);
+    }
+
+    //used for testing
+    Menu(final Scanner scanner) {
+        this.scanner = scanner;
+        this.players = new ArrayList<>();
     }
 
     public void printTitle() {

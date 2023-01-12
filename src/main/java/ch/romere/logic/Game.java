@@ -3,7 +3,6 @@ package ch.romere.logic;
 import ch.romere.Menu;
 import ch.romere.board.Board;
 import ch.romere.board.Position;
-import ch.romere.games.linegames.GameObjectType;
 import ch.romere.player.Player;
 import ch.romere.player.PlayerInput;
 import ch.romere.utils.ASCIIArtGenerator;

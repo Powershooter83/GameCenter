@@ -23,7 +23,6 @@ class BoardTest {
         boolean actual = board.isPositionOccupied(new Position(x, y));
         // assert
         assertTrue(actual);
-
     }
 
     @ParameterizedTest
