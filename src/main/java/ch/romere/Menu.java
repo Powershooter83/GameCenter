@@ -17,19 +17,19 @@ public class Menu {
 
     public Menu(final List<Player> players) {
         this.players = players;
+        scanner = new Scanner(System.in);
         printTitle();
         printGames();
         gameSelection();
-        scanner = new Scanner(System.in);
     }
 
     public Menu() {
         this.players = new ArrayList<>();
+        scanner = new Scanner(System.in);
         printTitle();
         printPlayerSelection();
         printGames();
         gameSelection();
-        scanner = new Scanner(System.in);
     }
 
     //used for testing
