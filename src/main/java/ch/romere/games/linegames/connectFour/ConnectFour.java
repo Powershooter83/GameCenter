@@ -19,6 +19,12 @@ public class ConnectFour extends LineGame {
         start();
     }
 
+    /**
+     * Diese Methode dient als eine Art von "eventHandler".
+     * Sie holt sich die Position koordinaten von dem Spieler Input und prüft dann ob das Format korrekt ist.
+     * Sollte das Format stimmen und die Spalte noch Platz haben, wird ein neues "Piece" erstellt.
+     * Zudem wird auf ein Win geprüft und am Schluss der Spieler gewechselt.
+     */
     public void eventHandler() {
         while (true) {
             Position position = new Position(playerInput.getInputNumber(), 0);

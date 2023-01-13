@@ -32,12 +32,16 @@ public class Menu {
         gameSelection();
     }
 
-    //used for testing
+    /**
+     * Dieser Konstruktor wird nur für die internen Unit Tests verwendet
+     */
     Menu(final Scanner scanner) {
         this.scanner = scanner;
         this.players = new ArrayList<>();
     }
-
+    /**
+     * Diese Methode "druckt" den Titel mit Hilfe des ASCIIArtGenerator in die Konsole.
+     */
     public void printTitle() {
         try {
             ASCIIArtGenerator.printTextArt("Welcome to the Game Center", ASCIIArtGenerator.ART_SIZE_SMALL);
@@ -47,6 +51,10 @@ public class Menu {
         System.out.println(System.lineSeparator().repeat(3));
     }
 
+    /**
+     * Diese Methode ist für die Erstellung der Spieler zuständig. Sie fragt in der Konsole
+     * nach den Spielernamen und erstellt sie anschliessend.
+     */
     public void printPlayerSelection() {
         for (int i = 1; i <= 2; i++) {
             System.out.println("     ---> Bitte gib einen Spielernamen fuer Spieler " + i + " ein <---");
@@ -56,6 +64,9 @@ public class Menu {
         System.out.println("\nHerzlich Willkommen " + players.get(0).getName() + " und " + players.get(1).getName() + "!");
     }
 
+    /**
+     * Diese Methode gibt die Auswahl der Spielmodis in der Konsole aus.
+     */
     public void printGames() {
         System.out.println("Bitte selektiere ein Spiel zum fortfahren:");
         System.out.println("1. TicTacToe");
@@ -64,6 +75,10 @@ public class Menu {
         System.out.println("4. Exit");
     }
 
+    /**
+     * Diese Methode dient zur auswahl von Spielmodis. Dazu wird der input des Spielers abgeglichen und dann
+     * der jeweilige Spielmodus gestartet oder das Programm beendet.
+     */
     public void gameSelection() {
         while (true) {
             switch (scanner.nextLine()) {

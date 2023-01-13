@@ -16,6 +16,11 @@ public abstract class LineGame extends Game {
         this.lineLength = lineLength;
     }
 
+    /**
+     * Diese Methode prüft, ob eine Linie (Horizontal, Vertikal oder Diagonal) mit der länge von lineLength
+     * existiert. Sollte es eine Linie von Pieces des selben Spielers geben, wird true zurückgegeben. Sonst natürlich false.
+     * @return Gibt ein boolean zurück.
+     */
     private boolean hasLine() {
         boolean hasLine = false;
         for (int yAxis = 0; yAxis < BOARD_HEIGHT; yAxis++) {
@@ -33,6 +38,11 @@ public abstract class LineGame extends Game {
         return hasLine;
     }
 
+    /**
+     * Diese Methode "druckt" eine Sieger meldung aus. Dabei wird der Spielernamen in einem speziellen ASCII muster gedrckt.
+     * Dann wird noch die PrintMenu sowie die menuInput Methode geöffnet.
+     * @param Als Input wird der Sieger als Player Object benötigt.
+     */
     public void printVictory(Player victoryPlayer) {
         System.out.println(System.lineSeparator());
         try {
@@ -47,6 +57,11 @@ public abstract class LineGame extends Game {
         menuInput();
     }
 
+    /**
+     * Diese Methode prüft auf einen Sieg oder ein Unentschied.
+     * Bei einem Sieger oder einem Unentschieden wird true zurückgegeben, ansonsten False.
+     * @return Gibt ein boolean zurück
+     */
     public boolean checkForWin() {
         if (!hasLine() && !boardIsFull()) {
             return false;
@@ -60,10 +75,19 @@ public abstract class LineGame extends Game {
         return true;
     }
 
+    /**
+     * Diese Methode fügt eine neues "Piece" dem Spielbrett hinzu.
+     * @param Die Koordinaten des zu hinzufügenden Pieces.
+     */
     protected void addPiece(final Position position) {
         board.addPiece(new GameObject(currentPlayer, GameObjectType.valueOf(currentPlayer.getPiece()), position));
     }
 
+    /**
+     * Das ist die Hauptmethode, welches jedes mal beim start aufgerufen wird.
+     * Sie gibt verschiedene Informationen in der Konsole aus und legt fest, welcher
+     * Spieler beginnen sollte.
+     */
     @Override
     public void start() {
         printTitle();

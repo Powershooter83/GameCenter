@@ -40,7 +40,12 @@ public class Memory extends Game {
         eventHandler();
     }
 
-
+    /**
+     * Diese Methode dient als eine Art von "eventHandler".
+     * Sie holt sich die Position koordinaten von dem Spieler Input und prüft dann ob das Format korrekt ist.
+     * Sollte das Format stimmen wird die Karte aufgedeckt.
+     * Sollten zwei Karten geöffnet sein, wird auf ein Paar geprüft werden.
+     */
     @Override
     public void eventHandler() {
         while (true) {
@@ -62,6 +67,13 @@ public class Memory extends Game {
         }
     }
 
+    /**
+     * Diese Methode prüft auf ein Paar. Dabei wird die openCards Liste angeschaut und uberprüft,
+     * ob die geöffneten Karten den selben Wert haben. Falls dies der Fall ist, bekommt der aktuelle Spieler einen Punkt
+     * und darf nochmals ran.
+     * Sollten sie einen unterschiedlichen Wert haben wird eine andere Meldung in die Konsoel gedruckt.
+     * Befor der neue (oder alte) Spieler an der Reihe ist wird noch ein sleep von 5 Sekunden gestartet, bis die Karten zugedeckt werden.
+     */
     private void checkForPair() {
         List<Card> openCards = this.board.getPieces().stream().filter(card -> ((Card) card).isTextShown()).map(Card.class::cast).filter(Card::isActive).toList();
 
@@ -71,7 +83,7 @@ public class Memory extends Game {
             System.out.println("     Spieler " + currentPlayer.getName() + " hat einen Punkt!");
             System.out.println("  !! Der Spieler " + currentPlayer.getName() + " ist nochmals an der Reihe !!");
             this.playerPoints.put(currentPlayer, this.playerPoints.get(currentPlayer) + 1);
-            ;
+
 
         }
         openCards.forEach(card -> card.showText(false));
