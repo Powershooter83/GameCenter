@@ -100,6 +100,12 @@ public class Memory extends Game {
 
     }
 
+    /**
+     * Diese Methode prüft auf einen Sieger (oder auf ein Unentschieden).
+     * Sollte die Card Liste keine aktiven Karten mehr besitzen, so wurden alle Karten gefunden.
+     * Dann wird einfach überprüft, welcher Spieler am meisten Punkte hat.
+     * Im falle eines Unentschiedens wird anstatt printVictory printDraw aufgerufen.
+     */
     public boolean checkForWin() {
         if (this.board.getPieces().stream().noneMatch(card -> ((Card) card).isActive())) {
             try {
@@ -122,7 +128,11 @@ public class Memory extends Game {
         return false;
     }
 
-
+    /**
+     * Diese Methode lädt die Karten auf das Board. Dabei wird die loadCardsFromFile()
+     * Methode aufgerufen und dann die ganze Liste random gemischt. Es wird für jedes Feld
+     * auf dem Brett eine neue Karte erstellt und dann einen Wert zugewiesen.
+     */
     private void loadCards() {
         loadCardsFromFile();
         Collections.shuffle(cards);
@@ -145,6 +155,10 @@ public class Memory extends Game {
         }
     }
 
+    /**
+     * Diese Methode lädt alle Möglichen Begriffe aus der memoryWords.txt Datei in die Cards Liste.
+     * Dabei ist eine Zeile immer ein Wort.
+     */
     private void loadCardsFromFile() {
         try {
             this.cards = Files.readAllLines(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("memoryWords.txt")).getFile()).toPath());
@@ -152,6 +166,10 @@ public class Memory extends Game {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Diese Methode holt und entfernt dann eine Zufällige Karte von der cards liste.
+     * @return Der aus der Liste entfernter Begriff.
+     */
 
     private String pickRandom() {
         Collections.shuffle(cards);

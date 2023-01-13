@@ -38,6 +38,10 @@ public abstract class Game implements Display, GameLogic {
 
     }
 
+    /**
+     * Diese Methode gibt ein Unentschieden in die Konsole aus.
+     * Mit Hilfe vom ASCIIArtGenerator.
+     */
     public void printDraw() {
         System.out.println(System.lineSeparator());
         try {
@@ -50,6 +54,9 @@ public abstract class Game implements Display, GameLogic {
         menuInput();
     }
 
+    /**
+     * Diese Methode gibt eine Art Untermenu in die Konsole aus.
+     */
     protected void printMenu() {
         System.out.println("========================================");
         System.out.println("= 'menu' gehe zum Menu                 =");
@@ -58,6 +65,9 @@ public abstract class Game implements Display, GameLogic {
         System.out.println("========================================");
     }
 
+    /**
+     * Hier wird geprüft, welcher Menüpunkt der Spieler ausgewählt hat.
+     */
     protected void menuInput() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -72,11 +82,21 @@ public abstract class Game implements Display, GameLogic {
         }
     }
 
+    /**
+     * Hier wird der Gegner eines Spieles zurückgegeben.
+     * @param Der Spieler von dem man den Gegner haben möchte.
+     * @return Der Gegner wird hier als player zurückgegeben.
+     */
     @Override
     public Player getOpponent(final Player player) {
         return players.stream().filter(p -> !p.equals(player)).findFirst().orElse(null);
     }
 
+    /**
+     * Das Spielbrett wird durch diese Methode aktualisiert.
+     * Dabei wird der Title und die Description auch ausgegeben.
+     * @param Der Spieler, welcher gerade am Zug ist.
+     */
     @Override
     public void updateBoard(final Player player) {
         for (int i = 0; i < 50; i++) {
@@ -89,6 +109,10 @@ public abstract class Game implements Display, GameLogic {
         printBoard(hasHorizontalLabeling, hasVerticalLabeling);
     }
 
+    /**
+     * Diese Methode gibt einen Sieger in der Konsole aus.
+     * Mit Hilfe vom ASCIIArtGenerator.
+     */
     public void printVictory(Player victoryPlayer) {
         System.out.println(System.lineSeparator());
         try {
@@ -103,6 +127,10 @@ public abstract class Game implements Display, GameLogic {
         menuInput();
     }
 
+    /**
+     * Diese Methode gibt ein paar leere Zeilen in der Konsole aus.
+     * Dies erzeugt eine Abgrenzung.
+     */
     @Override
     public void printSpacer() {
         for (int i = 0; i < 3; i++) {
@@ -110,6 +138,9 @@ public abstract class Game implements Display, GameLogic {
         }
     }
 
+    /**
+     * Durch diese Methode kann ein Spieler neugestartet werden.
+     */
     @Override
     public void restart() {
         currentPlayer = null;
@@ -117,6 +148,9 @@ public abstract class Game implements Display, GameLogic {
         start();
     }
 
+    /**
+     * Diese Methode "löscht" die Konsole. Dazu werden einfach leere Zeilen in die Konsole gedruckt.
+     */
     @Override
     public void clearScreen() {
         for (int i = 0; i < 50; i++) {
@@ -125,6 +159,11 @@ public abstract class Game implements Display, GameLogic {
     }
 
 
+    /**
+     * Diese Methode gibt das Spielbrett in die Konsole aus.
+     * Dabei kann so gut wie alles angepasst werde.
+     * Anzahl Zeilen, Spalten, die Zellenhöhe und Zellenbreite kann angepasst werden.
+     */
     @Override
     public void printBoard(final boolean horizontalLabeling, final boolean verticalLabeling) {
         StringBuilder board = new StringBuilder();
@@ -203,25 +242,43 @@ public abstract class Game implements Display, GameLogic {
 
     }
 
+    /**
+     * Diese Methode wandelt einen int zu einem Buchstaben um. (a = 0)
+     * @return Gibt den Buchstaben als String zurück.
+     */
     private String getLetter(int value) {
         return Character.toString((char) ('A' - 1 + value));
     }
 
+    /**
+     * Diese Methode druckt den zu startenden Spieler in die Konsole.
+     */
     @Override
     public void printStartingPlayer() {
         System.out.println("  -> Der Spieler " + currentPlayer.getName() + " beginnt die Partie!");
         printSpacer();
     }
 
+    /**
+     * Diese Methode holt sich einen Zufälligen Spieler aus der players "list"
+     * @return gibt einen Zufälligen Spieler zurück.
+     */
     public Player getRandomPlayer() {
         Collections.shuffle(players);
         return players.get(0);
     }
 
+    /**
+     * Mit dieser Methode wird der aktuelle Spieler gewechselt.
+     * Dazu wird die players liste durch laufen und geschaut, welcher spieler nicht der aktuelle spieler ist.
+     */
     public void swapCurrentPlayer() {
         this.currentPlayer = this.players.stream().filter(player -> player != currentPlayer).toList().get(0);
     }
 
+    /**
+     * Diese Methode druckt den Title des Spieles mit Hilfe des ASCIIArtGenerator in die Konsole.
+     */
     @Override
     public void printTitle() {
         clearScreen();
@@ -233,12 +290,20 @@ public abstract class Game implements Display, GameLogic {
         printSpacer();
     }
 
+    /**
+     * Diese Methode druckt die Spielbeschreibung in die Konsole.
+     */
     @Override
     public void printDescription() {
         System.out.println(gameDescription);
         printSpacer();
     }
 
+    /**
+     * Diese Methode prüft, ob das Spielbrett voll ist.
+     * Falls das Brett voll ist, wird true zurückgegeben, sonst false.
+     * @return Gibt einen boolean zurück.
+     */
     public boolean boardIsFull() {
         return board.getPieces().size() == BOARD_WIDTH * BOARD_HEIGHT;
     }
