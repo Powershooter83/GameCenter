@@ -5,6 +5,7 @@ import ch.romere.games.linegames.LineGame;
 import ch.romere.player.Player;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class ConnectFour extends LineGame {
 
