@@ -20,7 +20,7 @@ public class Memory extends Game {
                 Memory ist ein Gedaechtnisspiel, bei dem die Spieler versuchen, so viele Paare wie moeglich zu finden.
                 Die Spieler muessen die Kartenpaare aufdecken und versuchen, sie zu finden.
                 Wenn ein Spieler ein Paar gefunden hat, erhaelt er einen Punkt.
-                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""", 1, 2, 21, 5, false, false, players);
+                Das Spiel endet, wenn alle Kartenpaare gefunden wurden.""", 3, 6, 21, 5, false, false, players);
         this.players.forEach(player -> playerPoints.put(player, 0));
         start();
 
